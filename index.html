@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sagar Ramesh Dubile — AI/ML · Data Science · Blockchain</title>
+    <meta name="description"
+        content="Portfolio of Sagar Ramesh Dubile — AI/ML Engineer, Data Scientist & Blockchain Developer building intelligent decentralized systems." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div id="cursor-glow"></div>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- ── NAV ── -->
+    <nav id="nav">
+        <div class="nav-logo">
+            <span class="logo-bracket">&lt;</span>SRD<span class="logo-bracket">/&gt;</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about" data-nav>About</a></li>
+            <li><a href="#what-i-do" data-nav>Expertise</a></li>
+            <li><a href="#skills" data-nav>Skills</a></li>
+            <li><a href="#projects" data-nav>Projects</a></li>
+            <li><a href="#education" data-nav>Education</a></li>
+            <li><a href="#contact" data-nav>Contact</a></li>
+        </ul>
+        <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="#about" class="mobile-link">About</a></li>
+            <li><a href="#what-i-do" class="mobile-link">Expertise</a></li>
+            <li><a href="#skills" class="mobile-link">Skills</a></li>
+            <li><a href="#projects" class="mobile-link">Projects</a></li>
+            <li><a href="#education" class="mobile-link">Education</a></li>
+            <li><a href="#contact" class="mobile-link">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ── HERO ── -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span> Open to Opportunities
+            </div>
+
+            <h1 class="hero-name">
+                <span class="name-line name-line-1">Sagar</span>
+                <span class="name-line name-line-2">Ramesh</span>
+                <span class="name-line name-line-3">Dubile</span>
+            </h1>
+
+            <div class="hero-title-wrap">
+                <span class="hero-title-prefix">I build</span>
+                <span class="hero-typewriter" id="typewriter"></span>
+                <span class="cursor-blink">|</span>
+            </div>
+
+            <div class="hero-domain-pills">
+                <span class="domain-pill pill-ai">🧠 AI / ML</span>
+                <span class="domain-pill pill-data">📊 Data Science</span>
+                <span class="domain-pill pill-analytics">📈 Data Analytics</span>
+                <span class="domain-pill pill-chain">⛓ Blockchain</span>
+            </div>
+
+            <p class="hero-desc">
+                Final-year CS student at VIT Andhra Pradesh building intelligent systems
+                that turn raw data into decisions and smart contracts into trust.
+            </p>
+
+            <div class="hero-cta">
+                <a href="#projects" class="btn-primary" id="view-work-btn">View My Work</a>
+                <a href="#contact" class="btn-secondary">Get In Touch</a>
+                <a href="https://drive.google.com/file/d/1A9vXaBrLsf6vVH4yu1153Hw02zjL4DVL/view?usp=sharing"
+                    target="_blank" rel="noopener" class="btn-resume" id="resume-btn">⬇ Resume</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="3">0</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="8">0</span><span class="stat-suffix">.81</span>
+                    <span class="stat-label">CGPA / 10</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="3">0</span>
+                    <span class="stat-label">Certifications</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="4">0</span>
+                    <span class="stat-label">Domains</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML Pipeline Visual -->
+        <div class="hero-visual">
+            <div class="pipeline-wrap">
+                <div class="pipeline-title">
+                    <span class="chart-dot dot-green"></span>
+                    <span class="chart-title">ml_pipeline.run()</span>
+                </div>
+
+                <div class="pipeline-nodes" id="pipeline-nodes">
+                    <!-- Node 1 -->
+                    <div class="pnode pnode-data" id="pn1">
+                        <div class="pnode-icon">🗃</div>
+                        <div class="pnode-label">Raw Data</div>
+                        <div class="pnode-sub">CSV · JSON · DB</div>
+                    </div>
+                    <div class="pipe-connector" id="pc1">
+                        <div class="pipe-dot" style="--delay:0s"></div>
+                        <div class="pipe-dot" style="--delay:0.5s"></div>
+                    </div>
+                    <!-- Node 2 -->
+                    <div class="pnode pnode-preprocess" id="pn2">
+                        <div class="pnode-icon">🧹</div>
+                        <div class="pnode-label">Preprocess</div>
+                        <div class="pnode-sub">Clean · EDA · Scale</div>
+                    </div>
+                    <div class="pipe-connector" id="pc2">
+                        <div class="pipe-dot" style="--delay:0.2s"></div>
+                        <div class="pipe-dot" style="--delay:0.7s"></div>
+                    </div>
+                    <!-- Node 3 -->
+                    <div class="pnode pnode-model" id="pn3">
+                        <div class="pnode-icon">🧠</div>
+                        <div class="pnode-label">ML Model</div>
+                        <div class="pnode-sub">Train · Tune · Eval</div>
+                    </div>
+                    <div class="pipe-connector" id="pc3">
+                        <div class="pipe-dot" style="--delay:0.4s"></div>
+                        <div class="pipe-dot" style="--delay:0.9s"></div>
+                    </div>
+                    <!-- Node 4 -->
+                    <div class="pnode pnode-output" id="pn4">
+                        <div class="pnode-icon">✅</div>
+                        <div class="pnode-label">Predict</div>
+                        <div class="pnode-sub">Deploy · Monitor</div>
+                    </div>
+                </div>
+
+                <!-- Live metrics row -->
+                <div class="pipeline-metrics">
+                    <div class="pm-item">
+                        <span class="pm-val" id="pm-acc">94%</span>
+                        <span class="pm-key">Accuracy</span>
+                    </div>
+                    <div class="pm-sep"></div>
+                    <div class="pm-item">
+                        <span class="pm-val" style="color:var(--green)">0.87</span>
+                        <span class="pm-key">F1 Score</span>
+                    </div>
+                    <div class="pm-sep"></div>
+                    <div class="pm-item">
+                        <span class="pm-val" style="color:var(--orange)">↓ 0.06</span>
+                        <span class="pm-key">Loss</span>
+                    </div>
+                </div>
+
+                <!-- Blockchain strip -->
+                <div class="blockchain-mini">
+                    <div class="block" id="bl1"><span>Block #1041</span><span class="hash">0xa3f…</span></div>
+                    <div class="chain-arrow">→</div>
+                    <div class="block" id="bl2"><span>Block #1042</span><span class="hash">0xb7e…</span></div>
+                    <div class="chain-arrow">→</div>
+                    <div class="block active-block" id="bl3"><span>Block #1043</span><span class="hash">0xc2d…</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floating-chip chip-1">Python</div>
+            <div class="floating-chip chip-2">Solidity</div>
+            <div class="floating-chip chip-3">TensorFlow</div>
+            <div class="floating-chip chip-4">ChromaDB</div>
+            <div class="floating-chip chip-5">AWS</div>
+        </div>
+
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ── MARQUEE ── -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <span>Python</span><span>·</span>
+            <span>TensorFlow</span><span>·</span>
+            <span>PyTorch</span><span>·</span>
+            <span>Scikit-learn</span><span>·</span>
+            <span>Pandas</span><span>·</span>
+            <span>NumPy</span><span>·</span>
+            <span>Matplotlib</span><span>·</span>
+            <span>Power BI</span><span>·</span>
+            <span>Solidity</span><span>·</span>
+            <span>Ethereum</span><span>·</span>
+            <span>Hardhat</span><span>·</span>
+            <span>ChromaDB</span><span>·</span>
+            <span>FastAPI</span><span>·</span>
+            <span>AWS</span><span>·</span>
+            <span>SQL</span><span>·</span>
+            <span>Jupyter</span><span>·</span>
+            <span>NLP</span><span>·</span>
+            <span>Transformers</span><span>·</span>
+            <!-- duplicate for infinite scroll -->
+            <span>Python</span><span>·</span>
+            <span>TensorFlow</span><span>·</span>
+            <span>PyTorch</span><span>·</span>
+            <span>Scikit-learn</span><span>·</span>
+            <span>Pandas</span><span>·</span>
+            <span>NumPy</span><span>·</span>
+            <span>Matplotlib</span><span>·</span>
+            <span>Power BI</span><span>·</span>
+            <span>Solidity</span><span>·</span>
+            <span>Ethereum</span><span>·</span>
+            <span>Hardhat</span><span>·</span>
+            <span>ChromaDB</span><span>·</span>
+            <span>FastAPI</span><span>·</span>
+            <span>AWS</span><span>·</span>
+            <span>SQL</span><span>·</span>
+            <span>Jupyter</span><span>·</span>
+            <span>NLP</span><span>·</span>
+            <span>Transformers</span><span>·</span>
+        </div>
+    </div>
+
+    <!-- ── ABOUT ── -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-label">01 — WHO I AM</div>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <h2 class="section-heading">
+                        Turning <span class="accent-ai">Data</span> into<br />
+                        <span class="accent-chain">Decisions</span>, and Code<br />
+                        into <span class="accent-data">Impact</span>
+                    </h2>
+                    <p>I'm a final-year B.Tech Computer Science student at VIT Andhra Pradesh with a 8.81 CGPA,
+                        specializing across four high-demand domains — AI/ML, Data Science, Data Analytics, and
+                        Blockchain engineering.</p>
+                    <p>I build end-to-end systems: from training neural networks and building semantic search engines,
+                        to deploying Ethereum smart contracts and creating civic-tech platforms that serve real
+                        communities.</p>
+                    <p>As a <strong>Smart India Hackathon 2025 Finalist</strong>, I've shipped production-grade work
+                        under pressure — and I love doing it.</p>
+                    <div class="about-tags">
+                        <span class="tag tag-ai">🧠 Machine Learning</span>
+                        <span class="tag tag-data">📊 Data Science</span>
+                        <span class="tag tag-analytics">📈 Analytics</span>
+                        <span class="tag tag-chain">⛓ Smart Contracts</span>
+                        <span class="tag tag-ai">🔍 Semantic Search</span>
+                        <span class="tag tag-data">👁 Computer Vision</span>
+                        <span class="tag tag-chain">🌐 DApps</span>
+                        <span class="tag tag-analytics">🗄 SQL / EDA</span>
+                    </div>
+                </div>
+                <div class="about-terminal reveal">
+                    <div class="terminal-header">
+                        <span class="t-btn t-red"></span>
+                        <span class="t-btn t-yellow"></span>
+                        <span class="t-btn t-green"></span>
+                        <span class="t-title">sagar@portfolio ~ </span>
+                    </div>
+                    <div class="terminal-body" id="terminal-body">
+                        <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">python profile.py</span>
+                        </div>
+                        <div class="t-line t-output t-json">{</div>
+                        <div class="t-line t-output t-json"> <span class="t-key">"name"</span>: <span
+                                class="t-val">"Sagar Ramesh Dubile"</span>,</div>
+                        <div class="t-line t-output t-json"> <span class="t-key">"focus"</span>: <span
+                                class="t-val">["AI/ML","Data Science","Blockchain"]</span>,</div>
+                        <div class="t-line t-output t-json"> <span class="t-key">"stack"</span>: <span
+                                class="t-val">"Python · TF · Solidity · AWS"</span>,</div>
+                        <div class="t-line t-output t-json"> <span class="t-key">"cgpa"</span>: <span
+                                class="t-val">8.81</span>,</div>
+                        <div class="t-line t-output t-json"> <span class="t-key">"hacks"</span>: <span
+                                class="t-val">"SIH 2025 Finalist"</span></div>
+                        <div class="t-line t-output t-json">}</div>
+                        <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">echo $STATUS</span>
+                        </div>
+                        <div class="t-line t-output t-green-text">🟢 Open to opportunities</div>
+                        <div class="t-line t-blink"><span class="t-prompt">$</span> <span class="t-cursor">▌</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── WHAT I DO (SPECIALIZATIONS) ── -->
+    <section id="what-i-do" class="section section-dark">
+        <div class="container">
+            <div class="section-label">02 — EXPERTISE</div>
+            <h2 class="section-heading reveal">Four Domains, <span class="accent">One Engineer</span></h2>
+            <div class="spec-grid reveal">
+
+                <div class="spec-card spec-ai">
+                    <div class="spec-icon-wrap">
+                        <span class="spec-icon">🧠</span>
+                    </div>
+                    <h3>AI / Machine Learning</h3>
+                    <p>Building end-to-end ML pipelines — from data preprocessing and model training to evaluation and
+                        deployment. Specializing in NLP, semantic search, and computer vision systems.</p>
+                    <ul class="spec-list">
+                        <li>Model Training & Evaluation</li>
+                        <li>NLP · Transformers · Embeddings</li>
+                        <li>Facial Recognition (94% accuracy)</li>
+                        <li>Fuzzy C-Means Clustering</li>
+                    </ul>
+                    <div class="spec-tools">
+                        <span>TensorFlow</span><span>PyTorch</span><span>Scikit-learn</span><span>Sentence
+                            Transformers</span>
+                    </div>
+                </div>
+
+                <div class="spec-card spec-data">
+                    <div class="spec-icon-wrap">
+                        <span class="spec-icon">📊</span>
+                    </div>
+                    <h3>Data Science</h3>
+                    <p>Designing and implementing data pipelines, semantic corpora, and vector databases. Applying
+                        statistical methods and unsupervised learning to derive meaningful insights from complex
+                        datasets.</p>
+                    <ul class="spec-list">
+                        <li>EDA & Statistical Analysis</li>
+                        <li>Vector Search · ChromaDB</li>
+                        <li>PCA & Dimensionality Reduction</li>
+                        <li>Cosine Similarity & Retrieval</li>
+                    </ul>
+                    <div class="spec-tools">
+                        <span>Pandas</span><span>NumPy</span><span>ChromaDB</span><span>Jupyter</span>
+                    </div>
+                </div>
+
+                <div class="spec-card spec-analytics">
+                    <div class="spec-icon-wrap">
+                        <span class="spec-icon">📈</span>
+                    </div>
+                    <h3>Data Analytics</h3>
+                    <p>Creating KPI dashboards, district-wise analytics, and SLA tracking systems. Turning raw civic and
+                        operational data into clarity for decision-makers via interactive visualizations.</p>
+                    <ul class="spec-list">
+                        <li>Power BI KPI Dashboards</li>
+                        <li>District-wise Analytics (JanVAni)</li>
+                        <li>Data Cleaning & Transformation</li>
+                        <li>SLA & Lifecycle Tracking</li>
+                    </ul>
+                    <div class="spec-tools">
+                        <span>Power BI</span><span>Excel</span><span>SQL</span><span>Python</span>
+                    </div>
+                </div>
+
+                <div class="spec-card spec-chain">
+                    <div class="spec-icon-wrap">
+                        <span class="spec-icon">⛓</span>
+                    </div>
+                    <h3>Blockchain Engineering</h3>
+                    <p>Developing and auditing Ethereum smart contracts with gas optimization and security-first design.
+                        Building decentralized application workflows and contract validation pipelines.</p>
+                    <ul class="spec-list">
+                        <li>Solidity Smart Contracts</li>
+                        <li>Gas Optimization & Auditing</li>
+                        <li>DApp Architecture & Design</li>
+                        <li>Unit Testing & Validation</li>
+                    </ul>
+                    <div class="spec-tools">
+                        <span>Solidity</span><span>Ethereum</span><span>Hardhat</span><span>Remix</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SKILLS ── -->
+    <section id="skills" class="section">
+        <div class="container">
+            <div class="section-label">03 — TECH STACK</div>
+            <h2 class="section-heading reveal">Tools &amp; <span class="accent">Technologies</span></h2>
+
+            <div class="skills-categories reveal">
+                <button class="skill-cat-btn active" data-cat="all">All</button>
+                <button class="skill-cat-btn" data-cat="ai">AI / ML</button>
+                <button class="skill-cat-btn" data-cat="data">Data Science</button>
+                <button class="skill-cat-btn" data-cat="analytics">Analytics</button>
+                <button class="skill-cat-btn" data-cat="blockchain">Blockchain</button>
+                <button class="skill-cat-btn" data-cat="dev">Languages</button>
+            </div>
+
+            <div class="skills-grid reveal" id="skills-grid">
+                <!-- AI/ML -->
+                <div class="skill-card" data-cat="ai">
+                    <div class="skill-icon">🔥</div>
+                    <div class="skill-name">TensorFlow</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:88%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="ai">
+                    <div class="skill-icon">⚡</div>
+                    <div class="skill-name">PyTorch</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:82%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="ai">
+                    <div class="skill-icon">🤖</div>
+                    <div class="skill-name">Scikit-learn</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="ai">
+                    <div class="skill-icon">💬</div>
+                    <div class="skill-name">NLP / Transformers</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="ai">
+                    <div class="skill-icon">👁</div>
+                    <div class="skill-name">Computer Vision</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:78%"></div>
+                    </div>
+                </div>
+                <!-- Data Science -->
+                <div class="skill-card" data-cat="data">
+                    <div class="skill-icon">🐼</div>
+                    <div class="skill-name">Pandas / NumPy</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-data" style="--w:90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="data">
+                    <div class="skill-icon">🔍</div>
+                    <div class="skill-name">ChromaDB</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-data" style="--w:77%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="data">
+                    <div class="skill-icon">📐</div>
+                    <div class="skill-name">PCA / Clustering</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-data" style="--w:80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="data">
+                    <div class="skill-icon">📓</div>
+                    <div class="skill-name">Jupyter Notebooks</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-data" style="--w:88%"></div>
+                    </div>
+                </div>
+                <!-- Analytics -->
+                <div class="skill-card" data-cat="analytics">
+                    <div class="skill-icon">📊</div>
+                    <div class="skill-name">Power BI</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-analytics" style="--w:82%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="analytics">
+                    <div class="skill-icon">🗄️</div>
+                    <div class="skill-name">SQL</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-analytics" style="--w:80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="analytics">
+                    <div class="skill-icon">🧹</div>
+                    <div class="skill-name">Data Cleaning / EDA</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-analytics" style="--w:85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="analytics">
+                    <div class="skill-icon">📈</div>
+                    <div class="skill-name">KPI Dashboards</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-analytics" style="--w:78%"></div>
+                    </div>
+                </div>
+                <!-- Blockchain -->
+                <div class="skill-card" data-cat="blockchain">
+                    <div class="skill-icon">📝</div>
+                    <div class="skill-name">Solidity</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-chain" style="--w:87%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="blockchain">
+                    <div class="skill-icon">🔷</div>
+                    <div class="skill-name">Ethereum / DApps</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-chain" style="--w:85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="blockchain">
+                    <div class="skill-icon">🛠</div>
+                    <div class="skill-name">Hardhat / Remix</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-chain" style="--w:82%"></div>
+                    </div>
+                </div>
+                <!-- Languages -->
+                <div class="skill-card" data-cat="dev">
+                    <div class="skill-icon">🐍</div>
+                    <div class="skill-name">Python</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:92%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="dev">
+                    <div class="skill-icon">☕</div>
+                    <div class="skill-name">Java</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-ai" style="--w:70%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="dev">
+                    <div class="skill-icon">⚡</div>
+                    <div class="skill-name">FastAPI / n8n</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-data" style="--w:78%"></div>
+                    </div>
+                </div>
+                <div class="skill-card" data-cat="dev">
+                    <div class="skill-icon">☁️</div>
+                    <div class="skill-name">AWS</div>
+                    <div class="skill-bar">
+                        <div class="skill-fill sf-analytics" style="--w:75%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── EXPERIENCE ── -->
+    <section id="experience" class="section section-dark">
+        <div class="container">
+            <div class="section-label">04 — EXPERIENCE</div>
+            <h2 class="section-heading reveal">Where I've <span class="accent">Worked</span></h2>
+            <div class="timeline reveal">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="tc-header">
+                            <div>
+                                <h3 class="tc-title">Blockchain Engineer Intern</h3>
+                                <div class="tc-company">Shamgar Software Solutions</div>
+                            </div>
+                            <div class="tc-meta">
+                                <span class="tc-badge">Remote, India</span>
+                                <span class="tc-date">Nov 2025 – Mar 2026</span>
+                            </div>
+                        </div>
+                        <ul class="tc-points">
+                            <li>Developed and reviewed Ethereum smart contracts with focus on <strong>secure
+                                    logic</strong> and gas optimization</li>
+                            <li>Supported decentralized application workflows and blockchain solution design</li>
+                            <li>Designed smart contract modules with <strong>vulnerability assessment</strong> and
+                                comprehensive testing</li>
+                            <li>Implemented unit testing and contract validation pipelines to prevent logic
+                                vulnerabilities</li>
+                        </ul>
+                        <div class="tc-tags">
+                            <span class="tag-chain-badge">Solidity</span>
+                            <span class="tag-chain-badge">Ethereum</span>
+                            <span class="tag-chain-badge">Hardhat</span>
+                            <span class="tag-chain-badge">Smart Contracts</span>
+                            <span class="tag-chain-badge">DApps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-label">05 — PROJECTS</div>
+            <h2 class="section-heading reveal">Things I've <span class="accent">Built</span></h2>
+            <div class="projects-grid">
+
+                <!-- JanVAni -->
+                <div class="project-card reveal proj-ai-card">
+                    <div class="proj-domain-bar bar-ai"></div>
+                    <div class="proj-top-row">
+                        <div class="proj-number">01</div>
+                        <div class="proj-domains">
+                            <span class="pd-badge pd-ai">AI/ML</span>
+                            <span class="pd-badge pd-analytics">Analytics</span>
+                        </div>
+                    </div>
+                    <h3 class="proj-title">JanVAni</h3>
+                    <p class="proj-subtitle">AI-Powered Civic Issue Reporting &amp; Resolution Platform</p>
+                    <p class="proj-desc">Smart civic grievance platform with real-time tracking, map-based
+                        visualization, and AI autofill — improving prioritization by 45% and engagement by 60%.</p>
+                    <div class="proj-impact">
+                        <div class="impact-item">
+                            <span class="impact-value" style="color:var(--cyan)">45%</span>
+                            <span class="impact-label">Better Prioritization</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="impact-value" style="color:var(--orange)">60%</span>
+                            <span class="impact-label">More Engagement</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="impact-value" style="color:var(--green)">35%</span>
+                            <span class="impact-label">Faster Resolution</span>
+                        </div>
+                    </div>
+                    <ul class="proj-bullets">
+                        <li>RBAC dashboards with district-wise analytics</li>
+                        <li>AI autofill for issue categorization</li>
+                        <li><strong>Smart India Hackathon 2025 — Finalist 🏆</strong></li>
+                    </ul>
+                    <div class="proj-stack">
+                        <span>Python</span><span>FastAPI</span><span>AI Autofill</span><span>RBAC</span><span>Maps
+                            API</span>
+                    </div>
+                </div>
+
+                <!-- Neural Semantic Search -->
+                <div class="project-card reveal proj-data-card">
+                    <div class="proj-domain-bar bar-data"></div>
+                    <div class="proj-top-row">
+                        <div class="proj-number">02</div>
+                        <div class="proj-domains">
+                            <span class="pd-badge pd-data">Data Science</span>
+                            <span class="pd-badge pd-ai">NLP</span>
+                        </div>
+                    </div>
+                    <h3 class="proj-title">Neural Semantic<br />Search Engine</h3>
+                    <p class="proj-subtitle">Transformer-powered semantic retrieval at scale</p>
+                    <p class="proj-desc">Semantic search engine using Sentence Transformers, ChromaDB, and cosine
+                        similarity with PCA & Fuzzy C-Means clustering for intelligent topic organization.</p>
+                    <div class="search-demo-inline">
+                        <div class="sdemo-query">
+                            <span class="sdemo-icon">🔍</span>
+                            <span class="sdemo-text">"semantic document retrieval..."</span>
+                        </div>
+                        <div class="sdemo-results">
+                            <div class="sdemo-row">
+                                <div class="sdemo-bar" style="width:93%"></div><span>93%</span>
+                            </div>
+                            <div class="sdemo-row">
+                                <div class="sdemo-bar" style="width:81%;opacity:.7"></div><span>81%</span>
+                            </div>
+                            <div class="sdemo-row">
+                                <div class="sdemo-bar" style="width:67%;opacity:.5"></div><span>67%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="proj-bullets">
+                        <li>Custom semantic cache for low-latency queries</li>
+                        <li>FastAPI service with performance monitoring</li>
+                        <li>Soft topic assignment via Fuzzy C-Means</li>
+                    </ul>
+                    <div class="proj-stack">
+                        <span>Sentence Transformers</span><span>ChromaDB</span><span>FastAPI</span><span>PCA</span>
+                    </div>
+                </div>
+
+                <!-- TraceID -->
+                <div class="project-card reveal proj-cv-card">
+                    <div class="proj-domain-bar bar-green"></div>
+                    <div class="proj-top-row">
+                        <div class="proj-number">03</div>
+                        <div class="proj-domains">
+                            <span class="pd-badge pd-cv">Computer Vision</span>
+                            <span class="pd-badge pd-ai">AI/ML</span>
+                        </div>
+                    </div>
+                    <h3 class="proj-title">TraceID</h3>
+                    <p class="proj-subtitle">Frame-wise CCTV Monitoring System</p>
+                    <p class="proj-desc">Python facial recognition system achieving 94% accuracy for identifying missing
+                        individuals from CCTV feeds with automated detection and timestamp logging.</p>
+                    <div class="proj-impact">
+                        <div class="impact-item">
+                            <span class="impact-value" style="color:var(--green)">94%</span>
+                            <span class="impact-label">Accuracy</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="impact-value" style="color:var(--cyan)">70%</span>
+                            <span class="impact-label">Less Manual Effort</span>
+                        </div>
+                    </div>
+                    <ul class="proj-bullets">
+                        <li>Frame-wise detection with timestamp logging</li>
+                        <li>Optimized face-matching pipeline — real-time</li>
+                        <li>Automated detection reducing manual work by 70%</li>
+                    </ul>
+                    <div class="proj-stack">
+                        <span>Python</span><span>OpenCV</span><span>Face Recognition</span><span>Real-Time</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── EDUCATION ── -->
+    <section id="education" class="section section-dark">
+        <div class="container">
+            <div class="section-label">06 — EDUCATION</div>
+            <h2 class="section-heading reveal">Academic <span class="accent">Journey</span></h2>
+            <div class="edu-grid reveal">
+                <div class="edu-card edu-main">
+                    <div class="edu-icon">🎓</div>
+                    <div class="edu-content">
+                        <h3>B.Tech in Computer Science</h3>
+                        <div class="edu-inst">VIT Andhra Pradesh</div>
+                        <div class="edu-cgpa"><span class="cgpa-label">CGPA</span><span class="cgpa-value">8.81 /
+                                10</span></div>
+                    </div>
+                    <div class="edu-badge">Current</div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-icon">📚</div>
+                    <div class="edu-content">
+                        <h3>12th Science</h3>
+                        <div class="edu-inst">Super Thirty Higher Secondary School</div>
+                        <div class="edu-cgpa"><span class="cgpa-label">Score</span><span
+                                class="cgpa-value">82.67%</span></div>
+                    </div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-icon">🏫</div>
+                    <div class="edu-content">
+                        <h3>10th CBSE</h3>
+                        <div class="edu-inst">Podar International School</div>
+                        <div class="edu-cgpa"><span class="cgpa-label">Score</span><span
+                                class="cgpa-value">95.80%</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="certs-section reveal">
+                <h3 class="certs-heading">Certifications &amp; Achievements</h3>
+                <div class="certs-grid">
+                    <div class="cert-card cert-chain">
+                        <div class="cert-icon">🔗</div>
+                        <div class="cert-name">IBM Blockchain Developer</div>
+                        <div class="cert-issuer">IBM</div>
+                    </div>
+                    <div class="cert-card cert-aws">
+                        <div class="cert-icon">☁️</div>
+                        <div class="cert-name">AWS Cloud Foundation</div>
+                        <div class="cert-issuer">Amazon Web Services</div>
+                    </div>
+                    <div class="cert-card cert-aws">
+                        <div class="cert-icon">🏗</div>
+                        <div class="cert-name">AWS Cloud Architecting</div>
+                        <div class="cert-issuer">Amazon Web Services</div>
+                    </div>
+                    <div class="cert-card cert-highlight">
+                        <div class="cert-icon">🥇</div>
+                        <div class="cert-name">Smart India Hackathon 2025</div>
+                        <div class="cert-issuer">Finalist — Government of India</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-label">07 — GET IN TOUCH</div>
+            <h2 class="section-heading reveal">Let's Build Something <span class="accent">Together</span></h2>
+
+            <div class="contact-layout reveal">
+
+                <!-- LEFT: info cards -->
+                <div class="contact-info">
+                    <p class="contact-sub">Whether it's an AI pipeline, a data science project, or a blockchain system —
+                        I'm all ears. Drop me a message and I'll get back within 24 hours.</p>
+                    <div class="cinfo-cards">
+                        <a href="mailto:dubile.sagarr@gmail.com" class="cinfo-card">
+                            <span class="cinfo-icon">📧</span>
+                            <div>
+                                <div class="cinfo-label">Email</div>
+                                <div class="cinfo-val">dubile.sagarr@gmail.com</div>
+                            </div>
+                        </a>
+                        <a href="tel:+917588348800" class="cinfo-card">
+                            <span class="cinfo-icon">📱</span>
+                            <div>
+                                <div class="cinfo-label">Phone</div>
+                                <div class="cinfo-val">+91 75883 48800</div>
+                            </div>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener" class="cinfo-card">
+                            <span class="cinfo-icon">💼</span>
+                            <div>
+                                <div class="cinfo-label">LinkedIn</div>
+                                <div class="cinfo-val">Connect with me →</div>
+                            </div>
+                        </a>
+                        <a href="https://github.com" target="_blank" rel="noopener" class="cinfo-card">
+                            <span class="cinfo-icon">🐙</span>
+                            <div>
+                                <div class="cinfo-label">GitHub</div>
+                                <div class="cinfo-val">View my code →</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- RIGHT: contact form (Formspree) -->
+                <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cf-name">Full Name</label>
+                            <input type="text" id="cf-name" name="name" placeholder="Sagar Ramesh" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="cf-phone">Phone Number</label>
+                            <input type="tel" id="cf-phone" name="phone" placeholder="+91 XXXXX XXXXX" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-email">Email Address</label>
+                        <input type="email" id="cf-email" name="email" placeholder="you@example.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-subject">Subject</label>
+                        <input type="text" id="cf-subject" name="subject"
+                            placeholder="AI project, internship, collaboration..." />
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-message">Message</label>
+                        <textarea id="cf-message" name="message" rows="5" placeholder="Tell me what you have in mind..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit" id="form-submit-btn">
+                        <span class="submit-text">Send Message →</span>
+                        <span class="submit-loading" style="display:none">Sending…</span>
+                    </button>
+                    <div class="form-success" id="form-success" style="display:none">
+                        ✅ Message sent! I'll reply within 24 hours.
+                    </div>
+                    <div class="form-error" id="form-error" style="display:none">
+                        ❌ Something went wrong. Please email me directly.
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo"><span class="logo-bracket">&lt;</span>SRD<span class="logo-bracket">/&gt;</span>
+            </div>
+            <div class="footer-copy">© 2026 Sagar Ramesh Dubile &nbsp;·&nbsp; AI · Data Science · Blockchain</div>
+            <div class="footer-links">
+                <a href="mailto:dubile.sagarr@gmail.com">Email</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
