@@ -25,13 +25,20 @@ export default function Contact() {
         const data = new FormData(form);
 
         try {
-            // Submitting via our internal Next.js API route
-            const res = await fetch('/api/contact', {
+            // Submitting directly to Web3Forms to bypass Vercel server-side restrictions
+            const formDataObj = Object.fromEntries(data);
+            const payload = {
+                ...formDataObj,
+                access_key: '59a29125-e791-459e-a0aa-30aaebc781dd',
+            };
+
+            const res = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Accept: 'application/json',
                 },
-                body: JSON.stringify(Object.fromEntries(data)),
+                body: JSON.stringify(payload),
             });
 
             if (res.ok) {
