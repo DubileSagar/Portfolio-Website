@@ -11,7 +11,7 @@ export async function POST(request: Request) {
         // If it's not set, it will fail gracefully.
         const payload = {
             ...data,
-            access_key: process.env.WEB3FORMS_ACCESS_KEY || 'YOUR_ACCESS_KEY_HERE',
+            access_key: process.env.WEB3FORMS_ACCESS_KEY || '59a29125-e791-459e-a0aa-30aaebc781dd',
         };
 
         const response = await fetch(WEB3FORMS_URL, {
