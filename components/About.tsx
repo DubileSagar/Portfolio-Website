@@ -6,7 +6,6 @@ export default function About() {
     const terminalBodyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Reveal all elements in component with .reveal class
         const revealObs = new IntersectionObserver(
             (entries) => {
                 entries.forEach((e) => {
@@ -20,7 +19,6 @@ export default function About() {
         );
         document.querySelectorAll('#about .reveal').forEach((el) => revealObs.observe(el));
 
-        // Terminal sequence animation
         const tBody = terminalBodyRef.current;
         if (tBody) {
             const lines = Array.from(tBody.querySelectorAll('.t-line')) as HTMLElement[];

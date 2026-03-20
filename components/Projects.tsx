@@ -35,7 +35,6 @@ export default function Projects() {
                 <h2 className="section-heading reveal">Things I&apos;ve <span className="accent">Built</span></h2>
 
                 <div className="projects-grid">
-                    {/* JanVAni */}
                     <div className="project-card reveal proj-ai-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                         <div className="proj-domain-bar bar-ai"></div>
                         <div className="proj-top-row">
@@ -72,7 +71,6 @@ export default function Projects() {
                         </div>
                     </div>
 
-                    {/* Neural Semantic Search */}
                     <div className="project-card reveal proj-data-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                         <div className="proj-domain-bar bar-data"></div>
                         <div className="proj-top-row">
@@ -114,7 +112,6 @@ export default function Projects() {
                         </div>
                     </div>
 
-                    {/* TraceID */}
                     <div className="project-card reveal proj-cv-card" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
                         <div className="proj-domain-bar bar-green"></div>
                         <div className="proj-top-row">

@@ -20,7 +20,6 @@ export default function Marquee() {
                 <span>Jupyter</span><span>·</span>
                 <span>NLP</span><span>·</span>
                 <span>Transformers</span><span>·</span>
-                {/* duplicate for infinite scroll */}
                 <span>Python</span><span>·</span>
                 <span>TensorFlow</span><span>·</span>
                 <span>PyTorch</span><span>·</span>
