@@ -3,27 +3,22 @@
 import { useState, useEffect, useRef } from 'react';
 
 const skillsData = [
-    // AI/ML
     { cat: 'ai', icon: '🔥', name: 'TensorFlow', sfClass: 'sf-ai', w: '88%' },
     { cat: 'ai', icon: '⚡', name: 'PyTorch', sfClass: 'sf-ai', w: '82%' },
     { cat: 'ai', icon: '🤖', name: 'Scikit-learn', sfClass: 'sf-ai', w: '85%' },
     { cat: 'ai', icon: '💬', name: 'NLP / Transformers', sfClass: 'sf-ai', w: '80%' },
     { cat: 'ai', icon: '👁', name: 'Computer Vision', sfClass: 'sf-ai', w: '78%' },
-    // Data Science
     { cat: 'data', icon: '🐼', name: 'Pandas / NumPy', sfClass: 'sf-data', w: '90%' },
     { cat: 'data', icon: '🔍', name: 'ChromaDB', sfClass: 'sf-data', w: '77%' },
     { cat: 'data', icon: '📐', name: 'PCA / Clustering', sfClass: 'sf-data', w: '80%' },
     { cat: 'data', icon: '📓', name: 'Jupyter Notebooks', sfClass: 'sf-data', w: '88%' },
-    // Analytics
     { cat: 'analytics', icon: '📊', name: 'Power BI', sfClass: 'sf-analytics', w: '82%' },
     { cat: 'analytics', icon: '🗄️', name: 'SQL', sfClass: 'sf-analytics', w: '80%' },
     { cat: 'analytics', icon: '🧹', name: 'Data Cleaning / EDA', sfClass: 'sf-analytics', w: '85%' },
     { cat: 'analytics', icon: '📈', name: 'KPI Dashboards', sfClass: 'sf-analytics', w: '78%' },
-    // Blockchain
     { cat: 'blockchain', icon: '📝', name: 'Solidity', sfClass: 'sf-chain', w: '87%' },
     { cat: 'blockchain', icon: '🔷', name: 'Ethereum / DApps', sfClass: 'sf-chain', w: '85%' },
     { cat: 'blockchain', icon: '🛠', name: 'Hardhat / Remix', sfClass: 'sf-chain', w: '82%' },
-    // Languages
     { cat: 'dev', icon: '🐍', name: 'Python', sfClass: 'sf-ai', w: '92%' },
     { cat: 'dev', icon: '☕', name: 'Java', sfClass: 'sf-ai', w: '70%' },
     { cat: 'dev', icon: '⚡', name: 'FastAPI / n8n', sfClass: 'sf-data', w: '78%' },
@@ -35,7 +30,6 @@ export default function Skills() {
     const gridRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Reveal headers
         const revealObs = new IntersectionObserver((entries) => {
             entries.forEach((e) => {
                 if (e.isIntersecting) {
@@ -46,7 +40,6 @@ export default function Skills() {
         }, { threshold: 0.1 });
         document.querySelectorAll('#skills .reveal').forEach(el => revealObs.observe(el));
 
-        // Skill bar animation
         const sg = gridRef.current;
         if (sg) {
             const skillObs = new IntersectionObserver((entries) => {
@@ -58,7 +51,7 @@ export default function Skills() {
             skillObs.observe(sg);
             return () => skillObs.disconnect();
         }
-    }, [activeCat]); // Re-trigger potentially if skills change visibility
+    }, [activeCat]);
 
     return (
         <section id="skills" className="section">

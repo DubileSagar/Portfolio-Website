@@ -4,11 +4,8 @@ export async function POST(request: Request) {
     try {
         const data = await request.json();
 
-        // Web3Forms endpoint
         const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 
-        // Add the Web3Forms access key from environment variables
-        // If it's not set, it will fail gracefully.
         const payload = {
             ...data,
             access_key: process.env.WEB3FORMS_ACCESS_KEY || '59a29125-e791-459e-a0aa-30aaebc781dd',

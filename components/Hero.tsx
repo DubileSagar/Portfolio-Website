@@ -22,7 +22,6 @@ export default function Hero() {
     const [counts, setCounts] = useState({ projects: 0, cgpa: 0, certs: 0, domains: 0 });
 
     useEffect(() => {
-        // Reveal animation
         const revealObs = new IntersectionObserver(
             (entries) => {
                 entries.forEach((e) => {
@@ -76,7 +75,6 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        // Counters
         let current = { projects: 0, cgpa: 0, certs: 0, domains: 0 };
         const targets = { projects: 3, cgpa: 8, certs: 3, domains: 4 };
 
@@ -95,9 +93,7 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        // Pipeline node glow sequence
         const pTimer = setInterval(() => setPActive((p) => (p + 1) % 4), 900);
-        // Blockchain pulse sequence
         const bTimer = setInterval(() => setBActive((b) => (b + 1) % 3), 2500);
 
         return () => {
@@ -182,7 +178,6 @@ export default function Hero() {
 
             <div className="hero-visual">
                 <div className="hud-cluster">
-                    {/* Main AI Core Widget */}
                     <div className="hud-widget hud-main">
                         <div className="hud-header">
                             <span className="hud-dot bg-cyan"></span>
@@ -196,7 +191,6 @@ export default function Hero() {
                         <div className="hud-status">Status: <span>Optimal</span></div>
                     </div>
 
-                    {/* Side Widget 1: Analytics Bar Chart */}
                     <div className="hud-widget hud-side1">
                         <div className="hud-header">
                             <span className="hud-title">Analytics</span>
@@ -209,7 +203,6 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Side Widget 2: Blockchain Ledger */}
                     <div className="hud-widget hud-side2">
                         <div className="hud-header">
                             <span className="hud-dot bg-purple"></span>
@@ -222,7 +215,6 @@ export default function Hero() {
                         </div>
                     </div>
 
-                    {/* Side Widget 3: Data Stats */}
                     <div className="hud-widget hud-side3">
                         <div className="hud-stat-circle">
                             <svg viewBox="0 0 36 36" className="hud-circular-chart">
