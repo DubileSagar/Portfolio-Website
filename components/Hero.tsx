@@ -106,6 +106,12 @@ export default function Hero() {
         };
     }, []);
 
+    const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+        e.preventDefault();
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <section id="hero">
             <div className="hero-content">
@@ -138,8 +144,8 @@ export default function Hero() {
                 </p>
 
                 <div className="hero-cta">
-                    <a href="#projects" className="btn-primary" id="view-work-btn">View My Work</a>
-                    <a href="#contact" className="btn-secondary">Get In Touch</a>
+                    <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="btn-primary" id="view-work-btn">View My Work</a>
+                    <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="btn-secondary">Get In Touch</a>
                     <a
                         href="https://drive.google.com/file/d/1A9vXaBrLsf6vVH4yu1153Hw02zjL4DVL/view?usp=sharing"
                         target="_blank"
