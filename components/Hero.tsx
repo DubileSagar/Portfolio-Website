@@ -143,7 +143,7 @@ export default function Hero() {
                     <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')} className="btn-primary" id="view-work-btn">View My Work</a>
                     <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="btn-secondary">Get In Touch</a>
                     <a
-                        href="https://drive.google.com/file/d/1A9vXaBrLsf6vVH4yu1153Hw02zjL4DVL/view?usp=sharing"
+                        href="https://drive.google.com/file/d/1ckJQU1sm25Dzdc22CLkEdk1O6WylxWk5/view?usp=sharing"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-resume"
