@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sagar Dubile // Console</title>
+    
+    <!-- SEO and Meta tags -->
+    <meta name="description" content="Sagar Dubile's portfolio - AI/ML, Security, and Blockchain Engineer. Building systems that work in the real world." />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter for Prose, JetBrains Mono for Data -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Top Status Bar -->
+    <header class="status-bar" id="status-bar">
+      <div class="status-left">
+        <span class="sys-name">SAGAR_DUBILE.SYS</span>
+      </div>
+      <div class="status-right">
+        <span class="uptime-counter" id="uptime-counter">UPTIME: 0 DAYS</span>
+        <span class="clock" id="ist-clock">IST: 00:00:00</span>
+        <span class="status-badge">STATUS: OPEN TO FULL-TIME / INTERNSHIP <span class="status-dot"></span></span>
+      </div>
+    </header>
+
+    <div class="app-container">
+      <!-- Left Rail (Desktop) -->
+      <nav class="nav-rail" id="nav-rail">
+        <div class="nav-line"></div>
+        <ul class="nav-markers">
+          <li><a href="#about" class="nav-item active" data-target="about">[ 01 ]</a></li>
+          <li><a href="#projects" class="nav-item" data-target="projects">[ 02 ]</a></li>
+          <li><a href="#experience" class="nav-item" data-target="experience">[ 03 ]</a></li>
+          <li><a href="#stack" class="nav-item" data-target="stack">[ 04 ]</a></li>
+          <li><a href="#credentials" class="nav-item" data-target="credentials">[ 05 ]</a></li>
+          <li><a href="#contact" class="nav-item" data-target="contact">[ 06 ]</a></li>
+        </ul>
+      </nav>
+
+      <!-- Main Content Area -->
+      <main class="main-content" id="main-content">
+        <!-- 01 // ABOUT -->
+        <section id="about" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 01 // ABOUT ]</span>
+          </div>
+          <div class="panel-content">
+            <h1 class="hero-title">
+              Building systems that work in the real world — not just <span class="accent-primary">demos.</span><span class="cursor">_</span>
+            </h1>
+            <p class="hero-subhead">
+              Final-year CS student at VIT-AP (CGPA 8.76–8.81/10), AWS Certified Solutions Architect – Associate. I ship AI/ML, security, and blockchain systems from data to deployment — two production RAG systems built from scratch, a zero-day-catching WAF, and audited Ethereum smart contracts.
+            </p>
+            
+            <div class="status-strip">
+              <div class="status-row"><span class="label">LOCATION</span><span class="arrow">→</span><span class="value">Chhatrapati Sambhaji Nagar, India</span></div>
+              <div class="status-row"><span class="label">EDUCATION</span><span class="arrow">→</span><span class="value">B.Tech CS · VIT-AP · Final Year (Grad 2027)</span></div>
+              <div class="status-row"><span class="label">FOCUS</span><span class="arrow">→</span><span class="value">AI Engineering · Security · Blockchain</span></div>
+              <div class="status-row"><span class="label">STATUS</span><span class="arrow">→</span><span class="value">Open to full-time / internship roles</span></div>
+            </div>
+
+            <div class="hero-actions">
+              <a href="#projects" class="btn-primary">[ View Projects ]</a>
+              <a href="#" class="btn-secondary">[ Download Résumé ]</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 // PROJECTS -->
+        <section id="projects" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 02 // PROJECTS ]</span>
+          </div>
+          <div class="panel-content">
+            
+            <!-- Sentrix -->
+            <div class="service-card group">
+              <div class="service-header">
+                <h3 class="service-name">Sentrix <span class="service-type">// Hybrid ML-Powered Web Application Firewall</span></h3>
+                <div class="service-links">
+                  <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                </div>
+              </div>
+              <div class="service-readout">
+                <span class="readout-text">PRECISION <span class="metric stat-success" data-value="97.3">0</span>% · RECALL <span class="metric stat-success" data-value="96.8">0</span>% · LATENCY <span class="metric"><</span><span class="metric" data-value="50">0</span>ms · <span class="metric" data-value="1000">0</span>+ req/s</span>
+                <span class="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+              </div>
+              <p class="service-desc">
+                Hybrid WAF combining 60+ regex signatures with a fine-tuned DistilBERT transformer to catch zero-day SQLi, XSS, path traversal, and command injection across 50,000+ requests. Real-time WebSocket dashboard, Docker Compose + Kubernetes/GKE manifests.
+              </p>
+              <div class="service-tags">
+                <span class="tag">DistilBERT</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Kubernetes</span>
+                <span class="tag">Streamlit</span>
+              </div>
+            </div>
+
+            <!-- KaStack -->
+            <div class="service-card group">
+              <div class="service-header">
+                <h3 class="service-name">KaStack <span class="service-type">// RAG + Persona System over 11K Conversations</span></h3>
+                <div class="service-links">
+                  <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                </div>
+              </div>
+              <div class="service-readout">
+                <span class="readout-text"><span class="metric" data-value="11000">0</span>+ CONVERSATIONS · 2-STAGE FAISS RETRIEVAL · BUILT FROM SCRATCH</span>
+                <span class="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+              </div>
+              <p class="service-desc">
+                Retrieval-augmented generation system with no LangChain/LlamaIndex — topic-boundary detection via cosine similarity drift, two-stage FAISS retrieval, 3-pass persona extraction. Cost-optimized model routing (Haiku for bulk, Sonnet for chat). Shipped as a containerized FastAPI microservice with latency/throughput monitoring hooks.
+              </p>
+              <div class="service-tags">
+                <span class="tag">FAISS</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">AWS</span>
+                <span class="tag">LLMs</span>
+                <span class="tag">Sentence Transformers</span>
+              </div>
+            </div>
+
+            <!-- Neural Semantic Search Engine -->
+            <div class="service-card group">
+              <div class="service-header">
+                <h3 class="service-name">Neural Semantic Search Engine <span class="service-type">// Retrieval System</span></h3>
+                <div class="service-links">
+                  <a href="https://github.com/DubileSagar/Neural-Semantic-Search-RAG-Engine-" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                </div>
+              </div>
+              <div class="service-readout">
+                <span class="readout-text"><span class="metric stat-success" data-value="71.4">0</span>% CACHE HIT RATE · <span class="metric" data-value="18">0</span>K DOCS · O(n/k) LOOKUP</span>
+                <span class="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+              </div>
+              <p class="service-desc">
+                Semantic retrieval system over the 20 Newsgroups dataset. Fuzzy C-Means topic clusters power a cluster-bucketed cache index; PCA to 50 dims before clustering; automated k-selection via FPC sweep (k=5–25).
+              </p>
+              <div class="service-tags">
+                <span class="tag">Fuzzy C-Means</span>
+                <span class="tag">PCA</span>
+                <span class="tag">ChromaDB</span>
+                <span class="tag">FastAPI</span>
+              </div>
+            </div>
+
+            <!-- JanVaani -->
+            <div class="service-card group">
+              <div class="service-header">
+                <h3 class="service-name">JanVaani <span class="service-type">// AI-Powered Civic Grievance Platform</span></h3>
+                <div class="service-links">
+                  <a href="https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                </div>
+              </div>
+              <div class="service-readout">
+                <span class="readout-text">+<span class="metric stat-success" data-value="45">0</span>% PRIORITIZATION ACCURACY · +<span class="metric stat-success" data-value="60">0</span>% ENGAGEMENT · -<span class="metric stat-success" data-value="35">0</span>% RESOLUTION TIME</span>
+                <span class="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+              </div>
+              <p class="service-desc">
+                NLP-powered civic complaint platform with intelligent autofill and issue classification (trained on 8,000+ complaints), district-level RBAC dashboards with SLA monitoring, supporting 500+ concurrent submissions. Built as a Smart India Hackathon 2025 finalist project (national).
+              </p>
+              <div class="service-tags">
+                <span class="tag">NLP</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">RBAC</span>
+                <span class="tag">ML Classification</span>
+              </div>
+            </div>
+
+            <!-- TraceID -->
+            <div class="service-card group">
+              <div class="service-header">
+                <h3 class="service-name">TraceID <span class="service-type">// Frame-wise CCTV Facial Recognition</span></h3>
+                <div class="service-links">
+                  <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                </div>
+              </div>
+              <div class="service-readout">
+                <span class="readout-text"><span class="metric stat-success" data-value="94">0</span>% ACCURACY · <span class="metric" data-value="15">0</span>+ FPS · <span class="metric"><</span><span class="metric" data-value="2">0</span>s DETECTION-TO-ALERT</span>
+                <span class="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+              </div>
+              <p class="service-desc">
+                Real-time facial recognition pipeline across 500 identities with automated alerting and a 35% throughput improvement via batch inference and infra-level tuning.
+              </p>
+              <div class="service-tags">
+                <span class="tag">OpenCV</span>
+                <span class="tag">Deep Learning</span>
+                <span class="tag">Computer Vision</span>
+              </div>
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- 03 // EXPERIENCE -->
+        <section id="experience" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 03 // EXPERIENCE ]</span>
+          </div>
+          <div class="panel-content">
+            <div class="experience-block">
+              <div class="exp-header">
+                <h3 class="exp-role">Blockchain Engineer Intern <span class="exp-company">— Shamgar Software Solutions</span></h3>
+                <span class="exp-meta">Nov 2025 – Mar 2026 · Remote, India</span>
+              </div>
+              <ul class="exp-bullets">
+                <li>Designed smart contract modules focused on secure, exploit-resistant logic</li>
+                <li>Ran gas optimization passes and vulnerability assessments on existing codebases</li>
+                <li>Built unit testing pipelines that caught logic flaws pre-deployment</li>
+                <li>Contributed to dApp architecture and security-first code reviews</li>
+              </ul>
+              <div class="service-tags exp-tags">
+                <span class="tag">Solidity</span>
+                <span class="tag">Ethereum</span>
+                <span class="tag">Hardhat</span>
+                <span class="tag">Remix</span>
+                <span class="tag">Gas Optimization</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 // STACK -->
+        <section id="stack" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 04 // STACK ]</span>
+          </div>
+          <div class="panel-content">
+            <div class="stack-grid">
+              <div class="stack-row">
+                <div class="stack-label">AI · ML · SECURITY</div>
+                <div class="stack-arrow">→</div>
+                <div class="stack-items">Python · PyTorch · TensorFlow · HuggingFace · Scikit-learn</div>
+              </div>
+              <div class="stack-row">
+                <div class="stack-label">RAG · SEARCH · NLP</div>
+                <div class="stack-arrow">→</div>
+                <div class="stack-items">Sentence Transformers · FAISS · ChromaDB</div>
+              </div>
+              <div class="stack-row">
+                <div class="stack-label">BLOCKCHAIN · WEB3</div>
+                <div class="stack-arrow">→</div>
+                <div class="stack-items">Solidity · Ethereum · Hardhat · Web3.js</div>
+              </div>
+              <div class="stack-row">
+                <div class="stack-label">APIS · CLOUD · INFRA</div>
+                <div class="stack-arrow">→</div>
+                <div class="stack-items">FastAPI · Docker · Kubernetes · AWS (Certified SAA) · Git · SQL</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 05 // CREDENTIALS -->
+        <section id="credentials" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 05 // CREDENTIALS ]</span>
+          </div>
+          <div class="panel-content">
+            <ul class="cred-list">
+              <li>AWS Certified Solutions Architect – Associate</li>
+              <li>Smart India Hackathon 2025 — National Finalist</li>
+              <li>IBM Blockchain Developer Certification</li>
+              <li>B.Tech CS, VIT-AP — CGPA 8.76/10 (Final Year, Expected 2027)</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 06 // CONTACT -->
+        <section id="contact" class="panel section-module observer-target">
+          <div class="panel-header">
+            <span class="panel-label">[ 06 // CONTACT ]</span>
+          </div>
+          <div class="panel-content">
+            <div class="terminal-contact">
+              <div class="terminal-header">
+                <span>user@sagardubile:~$</span> <span class="accent-primary">send_message()</span>
+              </div>
+              
+              <div class="contact-links">
+                <div class="contact-row">
+                  <span class="contact-key">EMAIL</span>
+                  <span class="contact-val"><a href="mailto:dubile.sagarr@gmail.com">dubile.sagarr@gmail.com</a></span>
+                </div>
+                <div class="contact-row">
+                  <span class="contact-key">GITHUB</span>
+                  <span class="contact-val"><a href="https://github.com/DubileSagar" target="_blank">github.com/DubileSagar</a></span>
+                </div>
+                <div class="contact-row">
+                  <span class="contact-key">LINKEDIN</span>
+                  <span class="contact-val"><a href="https://www.linkedin.com/in/sagar-dubile-2079b0306" target="_blank">linkedin.com/in/sagar-dubile-2079b0306</a></span>
+                </div>
+                <div class="contact-row">
+                  <span class="contact-key">PREV_SITE</span>
+                  <span class="contact-val"><a href="https://sagardubile.dev" target="_blank">sagardubile.dev</a> (legacy)</span>
+                </div>
+              </div>
+              
+              <form class="contact-form" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                  <label for="name">> name:</label>
+                  <input type="text" id="name" placeholder="_" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">> email:</label>
+                  <input type="email" id="email" placeholder="_" required />
+                </div>
+                <div class="form-group">
+                  <label for="message">> message:</label>
+                  <textarea id="message" rows="3" placeholder="_" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">[ Execute ]</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+          <p>© 2026 SAGAR DUBILE — BUILT BECAUSE PROBLEMS BOTHER ME UNTIL THEY'RE SOLVED.</p>
+        </footer>
+
+      </main>
+    </div>
+
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
