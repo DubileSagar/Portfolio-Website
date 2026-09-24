@@ -1,10 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #F4F4F0;
-  --text: #0F0F0F;
-  --accent: #FF3300; /* Brutalist Red */
-  --border: #0F0F0F;
+  --bg-app: #09090b;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
 }
 
 * {
@@ -14,95 +17,103 @@
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: var(--font-prose), "Helvetica Neue", Arial, sans-serif;
-  overflow-x: hidden;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-prose), "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Custom Scrollbar for brutalist look */
+/* Background Gradients */
+.saas-gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+  filter: blur(80px);
+}
+
+/* Typography Options */
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-accent {
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Premium Card (Glassmorphism) */
+.saas-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.saas-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Buttons */
+.saas-btn-primary {
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
+  color: #fff;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: opacity 0.2s, transform 0.2s;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+}
+
+.saas-btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.saas-btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  border: 1px solid var(--card-border);
+}
+
+.saas-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
-  border-left: 2px solid var(--border);
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg); 
+  background: var(--bg-app); 
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--text); 
+  background: var(--card-border); 
+  border-radius: 10px;
 }
-
-/* Brutalist Utilities */
-.brutalist-border {
-  border: 2px solid var(--border);
-}
-
-.brutalist-border-b {
-  border-bottom: 2px solid var(--border);
-}
-
-.brutalist-border-t {
-  border-top: 2px solid var(--border);
-}
-
-.brutalist-border-l {
-  border-left: 2px solid var(--border);
-}
-
-.brutalist-border-r {
-  border-right: 2px solid var(--border);
-}
-
-.brutalist-shadow {
-  box-shadow: 6px 6px 0px var(--border);
-  transition: all 0.2s ease;
-}
-
-.brutalist-shadow:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0px var(--border);
-}
-
-.brutalist-shadow:active {
-  transform: translate(6px, 6px);
-  box-shadow: 0px 0px 0px var(--border);
-}
-
-/* Typography Overrides */
-h1, h2, h3, h4, h5, h6 {
-  text-transform: uppercase;
-  letter-spacing: -0.04em;
-  font-weight: 900;
-  line-height: 0.9;
-}
-
-.marquee-container {
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 2px solid var(--border);
-  border-bottom: 2px solid var(--border);
-  background: var(--accent);
-  color: var(--bg);
-  padding: 12px 0;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.marquee-content {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 20s linear infinite;
-}
-
-@keyframes marquee {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-100%, 0, 0); }
-}
-
-::selection {
-  background: var(--accent);
-  color: var(--bg);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary); 
 }
