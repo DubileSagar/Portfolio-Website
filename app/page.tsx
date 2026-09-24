@@ -1,681 +1,314 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { ArrowRight, Code2, Database, Shield, LayoutDashboard, Terminal, BrainCircuit, Network, LineChart, ExternalLink, Mail } from "lucide-react";
 
-const PROJECT_SENTRIX = {
-  id: "sentrix", name: "Sentrix", type: "// Hybrid ML-Powered Web Application Firewall",
-  readout: <>PRECISION <span className="metric stat-success" data-value="97.3">0</span>% · RECALL <span className="metric stat-success" data-value="96.8">0</span>% · LATENCY <span className="metric">&lt;</span><span className="metric" data-value="50">0</span>ms · <span className="metric" data-value="1000">0</span>+ req/s</>,
-  desc: "Combines 60+ regex signatures with a fine-tuned DistilBERT transformer to catch zero-day SQLi, XSS, path traversal, command injection across 50,000+ requests. Real-time WebSocket dashboard, Docker Compose + Kubernetes/GKE manifests.",
-  tags: ["DistilBERT", "FastAPI", "Docker", "Kubernetes", "Streamlit"],
-  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
-};
+const GithubIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+);
 
-const PROJECT_KASTACK = {
-  id: "kastack", name: "KaStack", type: "// RAG + Persona System over 11K Conversations",
-  readout: <><span className="metric" data-value="11000">0</span>+ CONVERSATIONS · 2-STAGE FAISS RETRIEVAL · BUILT FROM SCRATCH</>,
-  desc: "No LangChain/LlamaIndex — topic-boundary detection via cosine similarity drift, two-stage FAISS retrieval, 3-pass persona extraction, cost-optimized model routing (Haiku for bulk, Sonnet for chat). Shipped as a containerized FastAPI microservice with monitoring hooks.",
-  tags: ["FAISS", "FastAPI", "AWS", "LLMs", "Sentence Transformers"],
-  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
-};
+const LinkedinIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+);
 
-const PROJECT_NEURAL = {
-  id: "neural-search", name: "Neural Semantic Search Engine", type: "// Retrieval System",
-  readout: <><span className="metric stat-success" data-value="71.4">0</span>% CACHE HIT RATE · <span className="metric" data-value="18">0</span>K DOCS · O(n/k) LOOKUP</>,
-  desc: "Semantic retrieval over 20 Newsgroups. Fuzzy C-Means clusters power a cluster-bucketed cache index; PCA to 50 dims pre-clustering; automated k-selection via FPC sweep (k=5–25).",
-  tags: ["Fuzzy C-Means", "PCA", "ChromaDB", "FastAPI"],
-  links: { gh: "https://github.com/DubileSagar/Neural-Semantic-Search-RAG-Engine-" }, lens: 'engineer'
-};
-
-const PROJECT_TRACEID = {
-  id: "traceid", name: "TraceID", type: "// Frame-wise CCTV Facial Recognition",
-  readout: <><span className="metric stat-success" data-value="94">0</span>% ACCURACY · <span className="metric" data-value="15">0</span>+ FPS · <span className="metric">&lt;</span><span className="metric" data-value="2">0</span>s DETECTION-TO-ALERT</>,
-  desc: "Real-time facial recognition across 500 identities with automated alerting, 35% throughput improvement via batch inference and infra-level tuning.",
-  tags: ["OpenCV", "Deep Learning", "Computer Vision"],
-  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
-};
-
-const PROJECT_JANVAANI = {
-  id: "janvaani", name: "JanVaani", type: "// AI-Powered Civic Grievance Platform",
-  readout: <>+<span className="metric stat-success" data-value="45">0</span>% PRIORITIZATION ACCURACY · +<span className="metric stat-success" data-value="60">0</span>% ENGAGEMENT · -<span className="metric stat-success" data-value="35">0</span>% RESOLUTION TIME</>,
-  desc: "Product built for real accountability: citizens report issues, AI auto-classifies and prioritizes, district-level RBAC dashboards track every complaint through its lifecycle with SLA monitoring. Smart India Hackathon 2025 National Finalist (36-hour build, judged by government and industry judges).",
-  tags: ["Product Thinking", "NLP", "RBAC Dashboards", "Stakeholder Design"],
-  links: { gh: "https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031" }, lens: 'analyst'
-};
-
-const PROJECT_ATLIQ = {
-  id: "atliq", name: "AtliQ Sales Insight Analysis", type: "// Power BI + SQL",
-  readout: <>SALES INSIGHT DASHBOARD · POWER BI + SQL</>,
-  desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for business decision-making.",
-  tags: ["Power BI", "SQL", "Data Storytelling"],
-  links: { gh: "" }, lens: 'analyst'
-};
-
-const PROJECT_B2B = {
-  id: "b2b-saas", name: "B2B SaaS Customer Analytics", type: "// Retention Optimization",
-  readout: <>ITSM / OBSERVABILITY DATA · RETENTION-FOCUSED ANALYSIS</>,
-  desc: "Simulates and analyzes a realistic B2B SaaS platform (IT operations / observability) to demonstrate business-analysis skills: transforming raw operational data into retention and customer-health insight.",
-  tags: ["Business Analysis", "Python/Jupyter", "SaaS Metrics"],
-  links: { gh: "" }, lens: 'analyst'
-};
-
-const ENGINEER_PROJECTS = [PROJECT_SENTRIX, PROJECT_KASTACK, PROJECT_NEURAL, PROJECT_TRACEID];
-const ANALYST_PROJECTS = [PROJECT_JANVAANI, PROJECT_ATLIQ, PROJECT_B2B];
-const ALL_PROJECTS = [...ENGINEER_PROJECTS, ...ANALYST_PROJECTS];
-
-const THREAT_LOGS = [
-  { type: 'blocked', text: '[BLOCKED] SQLi attempt · 203.0.113.4 · confidence 0.98' },
-  { type: 'blocked', text: '[BLOCKED] XSS payload · <script> tag detected · 47ms' },
-  { type: 'allowed', text: '[ALLOWED] GET /api/v1/health · 12ms' },
-  { type: 'blocked', text: '[BLOCKED] path traversal · ../../etc/passwd · 31ms' }
+const PROJECTS = [
+  {
+    id: "sentrix",
+    title: "Sentrix WAF",
+    category: "Security & ML",
+    desc: "Hybrid Web Application Firewall combining 60+ regex signatures with a fine-tuned DistilBERT transformer. Catches zero-day SQLi, XSS, and command injection.",
+    stats: [
+      { label: "Precision", value: "97.3%" },
+      { label: "Latency", value: "<50ms" },
+      { label: "Traffic", value: "1K+ req/s" }
+    ],
+    icon: Shield,
+    link: "https://github.com/DubileSagar"
+  },
+  {
+    id: "kastack",
+    title: "KaStack RAG",
+    category: "AI Engineering",
+    desc: "Production-grade RAG system over 11K conversations. Built from scratch without LangChain. Features 2-stage FAISS retrieval and topic-boundary detection.",
+    stats: [
+      { label: "Data", value: "11K+ Chats" },
+      { label: "Routing", value: "Cost-Optimized" }
+    ],
+    icon: BrainCircuit,
+    link: "https://github.com/DubileSagar"
+  },
+  {
+    id: "janvaani",
+    title: "JanVaani Platform",
+    category: "Product & Analytics",
+    desc: "AI-powered civic grievance platform with intelligent autofill, district-level RBAC dashboards, and SLA monitoring. National Hackathon Finalist.",
+    stats: [
+      { label: "Accuracy", value: "+45%" },
+      { label: "Engagement", value: "+60%" }
+    ],
+    icon: LayoutDashboard,
+    link: "https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031"
+  },
+  {
+    id: "traceid",
+    title: "TraceID CCTV",
+    category: "Computer Vision",
+    desc: "Real-time facial recognition pipeline across 500 identities with automated alerting. Achieved massive throughput gains via batch inference tuning.",
+    stats: [
+      { label: "Accuracy", value: "94%" },
+      { label: "Speed", value: "15+ FPS" }
+    ],
+    icon: Network,
+    link: "https://github.com/DubileSagar"
+  },
+  {
+    id: "atliq",
+    title: "AtliQ Sales Insights",
+    category: "Data Storytelling",
+    desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for real-time business decision-making.",
+    stats: [
+      { label: "Stack", value: "Power BI + SQL" }
+    ],
+    icon: LineChart,
+    link: "#"
+  }
 ];
 
-const KPI_LOGS = [
-  { type: 'up', text: '[UP] prioritization accuracy · +45%' },
-  { type: 'up', text: '[UP] citizen engagement · +60%' },
-  { type: 'down', text: '[DOWN] resolution time · -35%' },
-  { type: 'synced', text: '[SYNCED] sales insight dashboard · Power BI + SQL' }
-];
-
-const CMDK_ACTIONS = [
-  { id: 'nav-about', label: 'Go to About', type: 'Navigation' },
-  { id: 'nav-projects', label: 'Go to Projects', type: 'Navigation' },
-  { id: 'nav-experience', label: 'Go to Experience', type: 'Navigation' },
-  { id: 'nav-stack', label: 'Go to Stack', type: 'Navigation' },
-  { id: 'nav-contact', label: 'Go to Contact', type: 'Navigation' },
-  { id: 'switch-engineer', label: 'Switch to Engineer Lens', type: 'Lens Toggle' },
-  { id: 'switch-analyst', label: 'Switch to Analyst Lens', type: 'Lens Toggle' },
-  { id: 'proj-sentrix', label: 'Project: Sentrix', type: 'Jump to Project' },
-  { id: 'proj-kastack', label: 'Project: KaStack', type: 'Jump to Project' },
-  { id: 'proj-traceid', label: 'Project: TraceID', type: 'Jump to Project' },
-  { id: 'proj-janvaani', label: 'Project: JanVaani', type: 'Jump to Project' },
-  { id: 'proj-atliq', label: 'Project: AtliQ', type: 'Jump to Project' },
-  { id: 'act-resume', label: 'Download Resume', type: 'Action' },
-  { id: 'act-email', label: 'Email Sagar', type: 'Action' },
-  { id: 'act-github', label: 'Open GitHub', type: 'Action' },
-  { id: 'act-linkedin', label: 'Open LinkedIn', type: 'Action' }
-];
-
-export default function Home() {
-  const [time, setTime] = useState("00:00:00");
-  const [uptime, setUptime] = useState(0);
-  const observerTargetRefs = useRef<(HTMLElement | null)[]>([]);
-
-  // Feature State
-  const [isBooting, setIsBooting] = useState(true);
-  const [bootLog, setBootLog] = useState("");
+export default function SpatialPortfolio() {
+  const containerRef = useRef<HTMLDivElement>(null);
   
-  // lens state can be 'engineer', 'analyst', or null (fork screen)
-  const [lens, setLens] = useState<'engineer' | 'analyst' | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const [cmdKOpen, setCmdKOpen] = useState(false);
-  const [cmdKQuery, setCmdKQuery] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState<string | null>(null);
-
-  const cmdKInputRef = useRef<HTMLInputElement>(null);
-
-  // === Boot Sequence Effect ===
-  useEffect(() => {
-    const hasBooted = localStorage.getItem("booted");
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (hasBooted === "true" || prefersReducedMotion) {
-      setIsBooting(false);
-      return;
-    }
-
-    const bootSequence = [
-      "INITIALIZING SDUBILE.SYS...",
-      "LOADING MODULES: ml_core · rag_pipeline · waf_engine · smart_contracts · analytics_core... OK",
-      "DETECTING VISITOR INTENT...",
-      "BOOT COMPLETE — CHOOSE YOUR PATH"
-    ];
-
-    let currentLine = 0;
-    let currentChar = 0;
-    let currentText = "";
-    
-    const typeInterval = setInterval(() => {
-      if (currentLine >= bootSequence.length) {
-        clearInterval(typeInterval);
-        setTimeout(() => {
-          setIsBooting(false);
-          localStorage.setItem("booted", "true");
-        }, 800);
-        return;
-      }
-      
-      const line = bootSequence[currentLine];
-      if (currentChar < line.length) {
-        currentText += line[currentChar];
-        setBootLog(currentText + "_");
-        currentChar++;
-      } else {
-        currentText += "\n";
-        setBootLog(currentText);
-        currentLine++;
-        currentChar = 0;
-      }
-    }, 15);
-
-    const handleSkip = () => {
-      clearInterval(typeInterval);
-      setIsBooting(false);
-      localStorage.setItem("booted", "true");
-    };
-
-    window.addEventListener("keydown", handleSkip);
-    window.addEventListener("click", handleSkip);
-    
-    return () => {
-      clearInterval(typeInterval);
-      window.removeEventListener("keydown", handleSkip);
-      window.removeEventListener("click", handleSkip);
-    };
-  }, []);
-
-  // Update body class for themes
-  useEffect(() => {
-    if (lens === 'analyst') {
-      document.body.classList.add('theme-analyst');
-    } else {
-      document.body.classList.remove('theme-analyst');
-    }
-  }, [lens]);
-
-  // === Core Interactions (Clock, Scroll Counters, Nav) ===
-  useEffect(() => {
-    if (isBooting || lens === null) return;
-
-    // Clock
-    const updateClock = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
-      }));
-    };
-    const clockInterval = setInterval(updateClock, 1000);
-    updateClock();
-
-    // Uptime
-    const startDate = new Date('2022-01-01T00:00:00Z');
-    const updateUptime = () => {
-      const diffDays = Math.floor(Math.abs(Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-      setUptime(diffDays);
-    };
-    updateUptime();
-
-    // Scroll Counters - Needs to re-run if lens changes to attach to new elements?
-    // Using MutationObserver or re-running on lens change
-  }, [isBooting, lens]);
-
-  useEffect(() => {
-    if (lens === null) return;
-
-    const countUp = (el: HTMLElement) => {
-      const target = parseFloat(el.getAttribute('data-value') || '0');
-      if (isNaN(target)) return;
-      let current = 0;
-      const duration = 1500;
-      const increment = target / (duration / 16);
-      const isFloat = target % 1 !== 0;
-
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          clearInterval(timer);
-          el.textContent = isFloat ? target.toFixed(1) : target.toString();
-        } else {
-          el.textContent = isFloat ? current.toFixed(1) : Math.floor(current).toString();
-        }
-      }, 16);
-    };
-
-    const metricsObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const els = entry.target.querySelectorAll('.metric');
-          els.forEach(el => {
-            const htmlEl = el as HTMLElement;
-            if (!htmlEl.classList.contains('counted') && htmlEl.hasAttribute('data-value')) {
-              countUp(htmlEl);
-              htmlEl.classList.add('counted');
-            }
-          });
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    // Clean up old counted classes so they recount if needed? No, standard is once.
-    document.querySelectorAll('.service-card').forEach(card => metricsObserver.observe(card));
-
-    // Nav Rail Sync
-    const navItems = document.querySelectorAll('.nav-item');
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('data-target') === id) item.classList.add('active');
-          });
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observerTargetRefs.current.forEach(section => { if (section) navObserver.observe(section); });
-
-    return () => {
-      metricsObserver.disconnect();
-      navObserver.disconnect();
-    }
-  }, [lens]);
-
-  // === Cmd+K Palette Effect ===
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setCmdKOpen(prev => !prev);
-      }
-      if (e.key === 'Escape' && cmdKOpen) {
-        setCmdKOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [cmdKOpen]);
-
-  useEffect(() => {
-    if (cmdKOpen && cmdKInputRef.current) {
-      cmdKInputRef.current.focus();
-    } else {
-      setCmdKQuery("");
-    }
-  }, [cmdKOpen]);
-
-  const handleAction = (id: string) => {
-    setCmdKOpen(false);
-    
-    if (id === 'switch-engineer') setLens('engineer');
-    else if (id === 'switch-analyst') setLens('analyst');
-    else if (id.startsWith('nav-')) {
-      const section = id.split('-')[1];
-      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
-    } else if (id.startsWith('proj-')) {
-      const projId = id.substring(5);
-      document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => {
-        const projEl = document.getElementById(`proj-card-${projId}`);
-        if (projEl) {
-          projEl.classList.remove('highlight');
-          void projEl.offsetWidth; 
-          projEl.classList.add('highlight');
-          projEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 500);
-    } else if (id === 'act-resume') {
-      alert('Downloading Resume...');
-    } else if (id === 'act-email') {
-      window.location.href = "mailto:dubile.sagarr@gmail.com";
-    } else if (id === 'act-github') {
-      window.open("https://github.com/DubileSagar", "_blank");
-    } else if (id === 'act-linkedin') {
-      window.open("https://www.linkedin.com/in/sagar-dubile-2079b0306", "_blank");
-    }
-  };
-
-  const filteredCmdK = CMDK_ACTIONS.filter(a => a.label.toLowerCase().includes(cmdKQuery.toLowerCase()));
-
-  // === RAG Search logic ===
-  const handleRagSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query.length > 2) {
-      const q = query.toLowerCase();
-      const match = ALL_PROJECTS.find(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
-      if (match) {
-        setSearchResult(match.id);
-      } else {
-        setSearchResult(null);
-      }
-    } else {
-      setSearchResult(null);
-    }
-  };
-
-  const setRef = (index: number) => (el: HTMLElement | null) => {
-    observerTargetRefs.current[index] = el;
-  };
-
-  if (isBooting) {
-    return (
-      <div className="boot-sequence">
-        <pre>{bootLog}</pre>
-      </div>
-    );
-  }
-
-  if (lens === null) {
-    return (
-      <div className="fork-container">
-        <div className="fork-panel fork-panel-engineer" onClick={() => setLens('engineer')}>
-          <h2 className="fork-headline">ENGINEER</h2>
-          <div className="fork-subline">AI/ML · RAG systems · security · blockchain</div>
-          <p className="fork-teaser">I build systems that catch zero-day attacks, retrieve answers from 11,000+ conversations, and ship audited smart contracts.</p>
-          <div className="fork-footer">Same person. Two lenses. Switch anytime.</div>
-        </div>
-        <div className="fork-panel fork-panel-analyst" onClick={() => setLens('analyst')}>
-          <h2 className="fork-headline">ANALYST</h2>
-          <div className="fork-subline">Product thinking · business analysis · data storytelling</div>
-          <p className="fork-teaser">I turn raw data into decisions — sales insight dashboards, retention analytics, and civic-impact platforms judged by real stakeholders.</p>
-          <div className="fork-footer">Same person. Two lenses. Switch anytime.</div>
-        </div>
-      </div>
-    );
-  }
-
-  // Derive dynamic content based on lens
-  const isAnalyst = lens === 'analyst';
-  const orderedProjects = isAnalyst 
-    ? [...ANALYST_PROJECTS, ...ENGINEER_PROJECTS] 
-    : [...ENGINEER_PROJECTS, ...ANALYST_PROJECTS];
-  const activeLogs = isAnalyst ? KPI_LOGS : THREAT_LOGS;
-
+  const smoothProgress = useSpring(scrollYProgress, { damping: 15, stiffness: 100 });
+  const yHero = useTransform(smoothProgress, [0, 1], [0, -400]);
+  const opacityHero = useTransform(smoothProgress, [0, 0.2], [1, 0]);
+  
   return (
-    <>
-      <header className="status-bar" id="status-bar">
-        <div className="status-left" style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
-          <span className="sys-name">SAGAR_DUBILE.SYS</span>
-          <div className="lens-toggle">
-            <span className={`lens-btn ${!isAnalyst ? 'active' : ''}`} onClick={() => setLens('engineer')}>BUILD</span>
-            <span className="lens-divider">|</span>
-            <span className={`lens-btn ${isAnalyst ? 'active' : ''}`} onClick={() => setLens('analyst')}>ANALYZE</span>
-          </div>
-        </div>
-        <div className="status-right">
-          <span className="uptime-counter" id="uptime-counter">UPTIME: {uptime} DAYS</span>
-          <span className="clock" id="ist-clock">IST: {time}</span>
-          <span className="status-badge">STATUS: OPEN TO FULL-TIME / INTERNSHIP <span className="status-dot"></span></span>
-          <button className="cmd-k-btn" onClick={() => setCmdKOpen(true)}>[ ⌘K ]</button>
-        </div>
-      </header>
+    <main ref={containerRef} className="relative min-h-screen">
+      {/* Background Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="orb orb-3"></div>
+      </div>
 
-      {/* Cmd+K Modal */}
-      {cmdKOpen && (
-        <div className="cmd-k-overlay" onClick={() => setCmdKOpen(false)}>
-          <div className="cmd-k-modal" onClick={e => e.stopPropagation()}>
-            <div className="cmd-k-input-wrapper">
-              <span style={{color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)'}}>&gt;</span>
-              <input 
-                ref={cmdKInputRef}
-                className="cmd-k-input" 
-                placeholder="Search commands..." 
-                value={cmdKQuery}
-                onChange={e => setCmdKQuery(e.target.value)}
-              />
-            </div>
-            <div className="cmd-k-list">
-              {filteredCmdK.length > 0 ? filteredCmdK.map(action => (
-                <div key={action.id} className="cmd-k-item" onClick={() => handleAction(action.id)}>
-                  <span>{action.label}</span>
-                  <span className="cmd-k-item-type">{action.type}</span>
+      {/* Nav */}
+      <nav className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center mix-blend-difference text-white">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="font-mono text-sm tracking-widest font-bold"
+        >
+          S.DUBILE
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex gap-6 text-sm font-medium"
+        >
+          <a href="#work" className="hover:text-[var(--accent)] transition-colors">Work</a>
+          <a href="#about" className="hover:text-[var(--accent)] transition-colors">About</a>
+        </motion.div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="h-screen flex items-center justify-center px-6 relative">
+        <motion.div 
+          style={{ y: yHero, opacity: opacityHero }}
+          className="max-w-4xl w-full flex flex-col items-center text-center z-10"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="glass-panel px-6 py-2 mb-8 inline-flex items-center gap-2"
+          >
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-[var(--accent)]"></span>
+            </span>
+            <span className="text-sm font-medium text-[var(--text-muted)]">Available for Opportunities</span>
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+          >
+            I engineer <span className="gradient-text-accent glow-text">intelligent</span> <br className="hidden md:block" /> systems.
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-lg md:text-xl text-[var(--text-muted)] max-w-2xl leading-relaxed"
+          >
+            Bridging the gap between raw data and real-world impact. From zero-day catching WAFs and 11K+ conversation RAGs, to business-driving analytics dashboards.
+          </motion.p>
+        </motion.div>
+        
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+          <ArrowRight className="rotate-90" />
+        </div>
+      </section>
+
+      {/* Projects Grid */}
+      <section id="work" className="py-32 px-6 lg:px-24 max-w-[1600px] mx-auto z-10 relative">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Selected Work</h2>
+          <p className="text-[var(--text-muted)] text-lg">Deployed services and analytical tools.</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {PROJECTS.map((proj, i) => (
+            <motion.div
+              key={proj.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              whileHover={{ y: -10, transition: { duration: 0.2 } }}
+              className="glass-panel p-8 md:p-10 flex flex-col group relative overflow-hidden"
+            >
+              {/* Subtle hover gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-glow)] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+
+              <div className="flex justify-between items-start mb-8 relative z-10">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-[var(--accent)]">
+                  <proj.icon size={28} />
                 </div>
-              )) : (
-                <div className="cmd-k-item">No matches found.</div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="app-container">
-        <nav className="nav-rail" id="nav-rail">
-          <div className="nav-line"></div>
-          <ul className="nav-markers">
-            <li><a href="#about" className="nav-item active" data-target="about">[ 01 ]</a></li>
-            <li><a href="#projects" className="nav-item" data-target="projects">[ 02 ]</a></li>
-            <li><a href="#experience" className="nav-item" data-target="experience">[ 03 ]</a></li>
-            <li><a href="#stack" className="nav-item" data-target="stack">[ 04 ]</a></li>
-            <li><a href="#credentials" className="nav-item" data-target="credentials">[ 05 ]</a></li>
-            <li><a href="#contact" className="nav-item" data-target="contact">[ 06 ]</a></li>
-          </ul>
-        </nav>
-
-        <main className="main-content" id="main-content">
-          <section id="about" className="panel section-module observer-target" ref={setRef(0)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 01 // ABOUT ]</span>
-            </div>
-            <div className="panel-content">
-              <h1 className="hero-title">
-                {isAnalyst 
-                  ? <>Turning raw data into decisions that hold up in the real <span className="accent-primary">world.</span><span className="cursor">_</span></>
-                  : <>Building systems that work in the real world — not just <span className="accent-primary">demos.</span><span className="cursor">_</span></>
-                }
-              </h1>
-              <p className="hero-subhead">
-                Final-year CS student at VIT-AP (CGPA 8.76–8.81/10), AWS Certified Solutions Architect – Associate. I move between building AI/security/blockchain systems from data to deployment, and analyzing data to drive product and business decisions — Smart India Hackathon 2025 National Finalist.
-              </p>
+                <span className="text-xs font-mono tracking-wider text-[var(--text-muted)] uppercase border border-white/10 px-3 py-1 rounded-full">
+                  {proj.category}
+                </span>
+              </div>
               
-              <div className="status-strip">
-                <div className="status-row"><span className="label">LOCATION</span><span className="arrow">→</span><span className="value">Chhatrapati Sambhaji Nagar, India</span></div>
-                <div className="status-row"><span className="label">EDUCATION</span><span className="arrow">→</span><span className="value">B.Tech CS · VIT-AP · Final Year (Grad 2027)</span></div>
-                <div className="status-row"><span className="label">FOCUS</span><span className="arrow">→</span><span className="value">AI Engineering · Security · Blockchain · Business Analysis</span></div>
-                <div className="status-row"><span className="label">STATUS</span><span className="arrow">→</span><span className="value">Open to full-time / internship roles</span></div>
-              </div>
+              <h3 className="text-2xl font-bold mb-3 relative z-10">{proj.title}</h3>
+              <p className="text-[var(--text-muted)] leading-relaxed mb-8 flex-grow relative z-10">
+                {proj.desc}
+              </p>
 
-              <div className="hero-actions">
-                <a href="#projects" className="btn-primary">[ View Projects ]</a>
-                <a href="#" className="btn-secondary" onClick={(e) => { e.preventDefault(); handleAction('act-resume'); }}>[ Download Résumé ]</a>
-              </div>
-
-              {/* Ticker */}
-              <div className="threat-ticker-wrapper">
-                <div className="threat-ticker">
-                  {[...activeLogs, ...activeLogs, ...activeLogs].map((log, i) => (
-                    <span key={i} className={`threat-log ${log.type}`}>{log.text}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="threat-caption">
-                {isAnalyst 
-                  ? "Sample readouts from JanVaani and AtliQ Sales Insight. Not a live feed."
-                  : "Sample log format from Sentrix — my ML-powered WAF. Not a live feed."
-                }
-              </div>
-
-              {/* RAG Search */}
-              <div className="rag-search" style={{ marginTop: '40px' }}>
-                <label style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-muted)'}}>ASK ABOUT MY WORK</label>
-                <input 
-                  type="text" 
-                  placeholder="> query_projects('which project deals with security?')" 
-                  value={searchQuery}
-                  onChange={handleRagSearch}
-                />
-                {searchResult && (() => {
-                  const match = ALL_PROJECTS.find(p => p.id === searchResult);
-                  if (!match) return null;
-                  const crossLens = match.lens !== lens;
-                  return (
-                    <div className="rag-result-card p-4 border border-[var(--accent-primary)] bg-[rgba(0,212,255,0.05)] text-[var(--text-primary)]">
-                      <div style={{fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-primary)', marginBottom: '8px', display: 'flex', alignItems: 'center'}}>
-                        SYSTEM MATCH: {searchResult.toUpperCase()}
-                        {crossLens && <span className="cross-lens-badge">[CROSS-LENS RESULT]</span>}
-                      </div>
-                      <p style={{fontSize: '0.9rem'}}>{match.desc}</p>
-                      <button className="mt-2 text-xs font-mono text-[var(--accent-secondary)] hover:underline" onClick={() => handleAction(`proj-${searchResult}`)}>
-                        [ View Full Project Details ]
-                      </button>
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
-          </section>
-
-          <section id="projects" className="panel section-module observer-target" ref={setRef(1)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 02 // PROJECTS ]</span>
-            </div>
-            <div className="panel-content">
-              {orderedProjects.map(proj => (
-                <div id={`proj-card-${proj.id}`} className="service-card group" key={proj.id}>
-                  <div className="service-header">
-                    <h3 className="service-name">{proj.name} <span className="service-type">{proj.type}</span></h3>
-                    {proj.links?.gh && (
-                      <div className="service-links">
-                        <a href={proj.links.gh} target="_blank" aria-label="GitHub Repo">[ GH ]</a>
-                      </div>
-                    )}
+              <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
+                {proj.stats.map(stat => (
+                  <div key={stat.label} className="flex flex-col">
+                    <span className="text-2xl font-semibold gradient-text">{stat.value}</span>
+                    <span className="text-xs text-[var(--text-muted)] uppercase tracking-wider">{stat.label}</span>
                   </div>
-                  <div className="service-readout">
-                    <span className="readout-text">{proj.readout}</span>
-                    <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                  </div>
-                  <p className="service-desc">{proj.desc}</p>
-                  <div className="service-tags">
-                    {proj.tags.map(tag => (
-                      <span key={tag} className="tag">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
 
-          <section id="experience" className="panel section-module observer-target" ref={setRef(2)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 03 // EXPERIENCE ]</span>
-            </div>
-            <div className="panel-content">
-              <div className="experience-block">
-                <div className="exp-header">
-                  <h3 className="exp-role">Blockchain Engineer Intern <span className="exp-company">— Shamgar Software Solutions</span></h3>
-                  <span className="exp-meta">Nov 2025 – Mar 2026 · Remote, India</span>
+              <a href={proj.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-[var(--accent)] transition-colors relative z-10 w-max">
+                View Project <ExternalLink size={16} />
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stack & Experience */}
+      <section id="about" className="py-32 px-6 lg:px-24 max-w-7xl mx-auto z-10 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+          
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl font-bold mb-12">Engineering Stack</h2>
+            <div className="space-y-8">
+              <div className="glass-panel p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <Terminal className="text-[var(--accent)]" />
+                  <h3 className="text-xl font-semibold">AI & Machine Learning</h3>
                 </div>
-                <ul className="exp-bullets">
-                  <li>Designed smart contract modules focused on secure, exploit-resistant logic</li>
-                  <li>Ran gas optimization passes and vulnerability assessments on existing codebases</li>
-                  <li>Built unit testing pipelines that caught logic flaws pre-deployment</li>
-                  <li>Contributed to dApp architecture and security-first code reviews</li>
-                </ul>
-                <div className="service-tags exp-tags">
-                  <span className="tag">Solidity</span>
-                  <span className="tag">Ethereum</span>
-                  <span className="tag">Hardhat</span>
-                  <span className="tag">Remix</span>
-                  <span className="tag">Gas Optimization</span>
+                <p className="text-[var(--text-muted)] leading-relaxed">Python, PyTorch, TensorFlow, HuggingFace, Scikit-learn, Sentence Transformers, FAISS, ChromaDB.</p>
+              </div>
+              <div className="glass-panel p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <Database className="text-[var(--accent)]" />
+                  <h3 className="text-xl font-semibold">Backend & Infrastructure</h3>
                 </div>
+                <p className="text-[var(--text-muted)] leading-relaxed">FastAPI, Docker, Kubernetes, AWS (Certified SAA), SQL, Git.</p>
+              </div>
+              <div className="glass-panel p-6">
+                <div className="flex items-center gap-4 mb-4">
+                  <Code2 className="text-[var(--accent)]" />
+                  <h3 className="text-xl font-semibold">Blockchain & Web3</h3>
+                </div>
+                <p className="text-[var(--text-muted)] leading-relaxed">Solidity, Ethereum, Hardhat, Web3.js, Gas Optimization.</p>
               </div>
             </div>
-          </section>
+          </motion.div>
 
-          <section id="stack" className="panel section-module observer-target" ref={setRef(3)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 04 // STACK ]</span>
-            </div>
-            <div className="panel-content">
-              <div className="stack-grid">
-                <div className="stack-row">
-                  <div className="stack-label">AI · ML · SECURITY</div>
-                  <div className="stack-arrow">→</div>
-                  <div className="stack-items">Python · PyTorch · TensorFlow · HuggingFace · Scikit-learn</div>
-                </div>
-                <div className="stack-row">
-                  <div className="stack-label">RAG · SEARCH · NLP</div>
-                  <div className="stack-arrow">→</div>
-                  <div className="stack-items">Sentence Transformers · FAISS · ChromaDB</div>
-                </div>
-                <div className="stack-row">
-                  <div className="stack-label">BLOCKCHAIN · WEB3</div>
-                  <div className="stack-arrow">→</div>
-                  <div className="stack-items">Solidity · Ethereum · Hardhat · Web3.js</div>
-                </div>
-                <div className="stack-row">
-                  <div className="stack-label">APIS · CLOUD · INFRA</div>
-                  <div className="stack-arrow">→</div>
-                  <div className="stack-items">FastAPI · Docker · Kubernetes · AWS (Certified SAA) · Git · SQL</div>
-                </div>
-                <div className="stack-row">
-                  <div className="stack-label">ANALYTICS · BUSINESS</div>
-                  <div className="stack-arrow">→</div>
-                  <div className="stack-items">Power BI · SQL · Data Storytelling · Requirement & Design Docs</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section id="credentials" className="panel section-module observer-target" ref={setRef(4)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 05 // CREDENTIALS ]</span>
-            </div>
-            <div className="panel-content">
-              <ul className="cred-list">
-                <li>AWS Certified Solutions Architect – Associate</li>
-                <li>Smart India Hackathon 2025 — National Finalist</li>
-                <li>IBM Blockchain Developer Certification</li>
-                <li>B.Tech CS, VIT-AP — CGPA 8.76/10 (Final Year, Expected 2027)</li>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl font-bold mb-12">Experience</h2>
+            <div className="glass-panel p-8 relative overflow-hidden">
+              <div className="absolute left-0 top-0 w-1 h-full bg-[var(--accent)]"></div>
+              <span className="text-[var(--accent)] font-mono text-sm mb-2 block">Nov 2025 – Mar 2026</span>
+              <h3 className="text-2xl font-bold mb-1">Blockchain Engineer Intern</h3>
+              <p className="text-[var(--text-muted)] mb-6">Shamgar Software Solutions</p>
+              <ul className="space-y-4 text-[var(--text-muted)]">
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/20 mt-2 shrink-0"></div>
+                  <p>Designed smart contract modules focused on secure, exploit-resistant logic.</p>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/20 mt-2 shrink-0"></div>
+                  <p>Ran gas optimization passes and vulnerability assessments on existing codebases.</p>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/20 mt-2 shrink-0"></div>
+                  <p>Built unit testing pipelines that caught logic flaws pre-deployment.</p>
+                </li>
               </ul>
             </div>
-          </section>
+          </motion.div>
+        </div>
+      </section>
 
-          <section id="contact" className="panel section-module observer-target" ref={setRef(5)}>
-            <div className="panel-header">
-              <span className="panel-label">[ 06 // CONTACT ]</span>
-            </div>
-            <div className="panel-content">
-              <div className="terminal-contact">
-                <div className="terminal-header">
-                  <span>user@sagardubile:~$</span> <span className="accent-primary">send_message()</span>
-                </div>
-                
-                <div className="contact-links">
-                  <div className="contact-row">
-                    <span className="contact-key">EMAIL</span>
-                    <span className="contact-val"><a href="mailto:dubile.sagarr@gmail.com">dubile.sagarr@gmail.com</a></span>
-                  </div>
-                  <div className="contact-row">
-                    <span className="contact-key">GITHUB</span>
-                    <span className="contact-val"><a href="https://github.com/DubileSagar" target="_blank">github.com/DubileSagar</a></span>
-                  </div>
-                  <div className="contact-row">
-                    <span className="contact-key">LINKEDIN</span>
-                    <span className="contact-val"><a href="https://www.linkedin.com/in/sagar-dubile-2079b0306" target="_blank">linkedin.com/in/sagar-dubile-2079b0306</a></span>
-                  </div>
-                  <div className="contact-row">
-                    <span className="contact-key">PREV_SITE</span>
-                    <span className="contact-val"><a href="https://sagardubile.dev" target="_blank">sagardubile.dev</a> (legacy)</span>
-                  </div>
-                </div>
-                
-                <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-                  <div className="form-group">
-                    <label htmlFor="name">&gt; name:</label>
-                    <input type="text" id="name" placeholder="_" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="email">&gt; email:</label>
-                    <input type="email" id="email" placeholder="_" required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="message">&gt; message:</label>
-                    <textarea id="message" rows={3} placeholder="_" required></textarea>
-                  </div>
-                  <button type="submit" className="btn-submit">[ Execute ]</button>
-                </form>
-              </div>
-            </div>
-          </section>
-
-          <footer className="footer">
-            <p>© 2026 SAGAR DUBILE — BUILT BECAUSE PROBLEMS BOTHER ME UNTIL THEY'RE SOLVED.</p>
-          </footer>
-
-        </main>
-      </div>
-    </>
+      {/* Footer / Connect */}
+      <footer className="relative z-10 py-24 text-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[rgba(94,92,230,0.1)] to-transparent pointer-events-none"></div>
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-2xl mx-auto px-6 relative z-10"
+        >
+          <h2 className="text-4xl font-bold mb-8">Let's build something.</h2>
+          <div className="flex justify-center gap-6 mb-16">
+            <a href="mailto:dubile.sagarr@gmail.com" className="p-4 rounded-full glass-panel hover:bg-white/10 transition-colors group">
+              <Mail className="text-[var(--text-muted)] group-hover:text-white transition-colors" />
+            </a>
+            <a href="https://github.com/DubileSagar" target="_blank" className="p-4 rounded-full glass-panel hover:bg-white/10 transition-colors group">
+              <span className="text-[var(--text-muted)] group-hover:text-white transition-colors"><GithubIcon /></span>
+            </a>
+            <a href="https://www.linkedin.com/in/sagar-dubile-2079b0306" target="_blank" className="p-4 rounded-full glass-panel hover:bg-white/10 transition-colors group">
+              <span className="text-[var(--text-muted)] group-hover:text-white transition-colors"><LinkedinIcon /></span>
+            </a>
+          </div>
+          <p className="font-mono text-sm text-[var(--text-muted)]">
+            © 2026 SAGAR DUBILE.<br/>BUILT BECAUSE PROBLEMS BOTHER ME UNTIL THEY'RE SOLVED.
+          </p>
+        </motion.div>
+      </footer>
+    </main>
   );
 }
