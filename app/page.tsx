@@ -47,7 +47,7 @@ const PROJECT_ATLIQ = {
   readout: <>SALES INSIGHT DASHBOARD · POWER BI + SQL</>,
   desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for business decision-making.",
   tags: ["Power BI", "SQL", "Data Storytelling"],
-  links: {}, lens: 'analyst'
+  links: { gh: "" }, lens: 'analyst'
 };
 
 const PROJECT_B2B = {
@@ -55,7 +55,7 @@ const PROJECT_B2B = {
   readout: <>ITSM / OBSERVABILITY DATA · RETENTION-FOCUSED ANALYSIS</>,
   desc: "Simulates and analyzes a realistic B2B SaaS platform (IT operations / observability) to demonstrate business-analysis skills: transforming raw operational data into retention and customer-health insight.",
   tags: ["Business Analysis", "Python/Jupyter", "SaaS Metrics"],
-  links: {}, lens: 'analyst'
+  links: { gh: "" }, lens: 'analyst'
 };
 
 const ENGINEER_PROJECTS = [PROJECT_SENTRIX, PROJECT_KASTACK, PROJECT_NEURAL, PROJECT_TRACEID];
