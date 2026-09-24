@@ -1,14 +1,66 @@
 "use client";
 
-import { useEffect, useState, useRef, FormEvent } from "react";
+import { useEffect, useState, useRef } from "react";
 
-const PROJECTS_DATA = [
-  { id: "sentrix", name: "Sentrix", desc: "Hybrid WAF combining 60+ regex signatures with a fine-tuned DistilBERT transformer to catch zero-day SQLi, XSS, path traversal, and command injection." },
-  { id: "kastack", name: "KaStack", desc: "Retrieval-augmented generation system with no LangChain/LlamaIndex — topic-boundary detection, two-stage FAISS retrieval, 3-pass persona extraction." },
-  { id: "neural-search", name: "Neural Semantic Search Engine", desc: "Semantic retrieval system over the 20 Newsgroups dataset. Fuzzy C-Means topic clusters power a cluster-bucketed cache index." },
-  { id: "janvaani", name: "JanVaani", desc: "NLP-powered civic complaint platform with intelligent autofill and issue classification, district-level RBAC dashboards." },
-  { id: "traceid", name: "TraceID", desc: "Real-time facial recognition pipeline across 500 identities with automated alerting and a 35% throughput improvement." }
-];
+const PROJECT_SENTRIX = {
+  id: "sentrix", name: "Sentrix", type: "// Hybrid ML-Powered Web Application Firewall",
+  readout: <>PRECISION <span className="metric stat-success" data-value="97.3">0</span>% · RECALL <span className="metric stat-success" data-value="96.8">0</span>% · LATENCY <span className="metric">&lt;</span><span className="metric" data-value="50">0</span>ms · <span className="metric" data-value="1000">0</span>+ req/s</>,
+  desc: "Combines 60+ regex signatures with a fine-tuned DistilBERT transformer to catch zero-day SQLi, XSS, path traversal, command injection across 50,000+ requests. Real-time WebSocket dashboard, Docker Compose + Kubernetes/GKE manifests.",
+  tags: ["DistilBERT", "FastAPI", "Docker", "Kubernetes", "Streamlit"],
+  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
+};
+
+const PROJECT_KASTACK = {
+  id: "kastack", name: "KaStack", type: "// RAG + Persona System over 11K Conversations",
+  readout: <><span className="metric" data-value="11000">0</span>+ CONVERSATIONS · 2-STAGE FAISS RETRIEVAL · BUILT FROM SCRATCH</>,
+  desc: "No LangChain/LlamaIndex — topic-boundary detection via cosine similarity drift, two-stage FAISS retrieval, 3-pass persona extraction, cost-optimized model routing (Haiku for bulk, Sonnet for chat). Shipped as a containerized FastAPI microservice with monitoring hooks.",
+  tags: ["FAISS", "FastAPI", "AWS", "LLMs", "Sentence Transformers"],
+  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
+};
+
+const PROJECT_NEURAL = {
+  id: "neural-search", name: "Neural Semantic Search Engine", type: "// Retrieval System",
+  readout: <><span className="metric stat-success" data-value="71.4">0</span>% CACHE HIT RATE · <span className="metric" data-value="18">0</span>K DOCS · O(n/k) LOOKUP</>,
+  desc: "Semantic retrieval over 20 Newsgroups. Fuzzy C-Means clusters power a cluster-bucketed cache index; PCA to 50 dims pre-clustering; automated k-selection via FPC sweep (k=5–25).",
+  tags: ["Fuzzy C-Means", "PCA", "ChromaDB", "FastAPI"],
+  links: { gh: "https://github.com/DubileSagar/Neural-Semantic-Search-RAG-Engine-" }, lens: 'engineer'
+};
+
+const PROJECT_TRACEID = {
+  id: "traceid", name: "TraceID", type: "// Frame-wise CCTV Facial Recognition",
+  readout: <><span className="metric stat-success" data-value="94">0</span>% ACCURACY · <span className="metric" data-value="15">0</span>+ FPS · <span className="metric">&lt;</span><span className="metric" data-value="2">0</span>s DETECTION-TO-ALERT</>,
+  desc: "Real-time facial recognition across 500 identities with automated alerting, 35% throughput improvement via batch inference and infra-level tuning.",
+  tags: ["OpenCV", "Deep Learning", "Computer Vision"],
+  links: { gh: "https://github.com/DubileSagar" }, lens: 'engineer'
+};
+
+const PROJECT_JANVAANI = {
+  id: "janvaani", name: "JanVaani", type: "// AI-Powered Civic Grievance Platform",
+  readout: <>+<span className="metric stat-success" data-value="45">0</span>% PRIORITIZATION ACCURACY · +<span className="metric stat-success" data-value="60">0</span>% ENGAGEMENT · -<span className="metric stat-success" data-value="35">0</span>% RESOLUTION TIME</>,
+  desc: "Product built for real accountability: citizens report issues, AI auto-classifies and prioritizes, district-level RBAC dashboards track every complaint through its lifecycle with SLA monitoring. Smart India Hackathon 2025 National Finalist (36-hour build, judged by government and industry judges).",
+  tags: ["Product Thinking", "NLP", "RBAC Dashboards", "Stakeholder Design"],
+  links: { gh: "https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031" }, lens: 'analyst'
+};
+
+const PROJECT_ATLIQ = {
+  id: "atliq", name: "AtliQ Sales Insight Analysis", type: "// Power BI + SQL",
+  readout: <>SALES INSIGHT DASHBOARD · POWER BI + SQL</>,
+  desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for business decision-making.",
+  tags: ["Power BI", "SQL", "Data Storytelling"],
+  links: { gh: "" }, lens: 'analyst'
+};
+
+const PROJECT_B2B = {
+  id: "b2b-saas", name: "B2B SaaS Customer Analytics", type: "// Retention Optimization",
+  readout: <>ITSM / OBSERVABILITY DATA · RETENTION-FOCUSED ANALYSIS</>,
+  desc: "Simulates and analyzes a realistic B2B SaaS platform (IT operations / observability) to demonstrate business-analysis skills: transforming raw operational data into retention and customer-health insight.",
+  tags: ["Business Analysis", "Python/Jupyter", "SaaS Metrics"],
+  links: { gh: "" }, lens: 'analyst'
+};
+
+const ENGINEER_PROJECTS = [PROJECT_SENTRIX, PROJECT_KASTACK, PROJECT_NEURAL, PROJECT_TRACEID];
+const ANALYST_PROJECTS = [PROJECT_JANVAANI, PROJECT_ATLIQ, PROJECT_B2B];
+const ALL_PROJECTS = [...ENGINEER_PROJECTS, ...ANALYST_PROJECTS];
 
 const THREAT_LOGS = [
   { type: 'blocked', text: '[BLOCKED] SQLi attempt · 203.0.113.4 · confidence 0.98' },
@@ -17,15 +69,26 @@ const THREAT_LOGS = [
   { type: 'blocked', text: '[BLOCKED] path traversal · ../../etc/passwd · 31ms' }
 ];
 
+const KPI_LOGS = [
+  { type: 'up', text: '[UP] prioritization accuracy · +45%' },
+  { type: 'up', text: '[UP] citizen engagement · +60%' },
+  { type: 'down', text: '[DOWN] resolution time · -35%' },
+  { type: 'synced', text: '[SYNCED] sales insight dashboard · Power BI + SQL' }
+];
+
 const CMDK_ACTIONS = [
   { id: 'nav-about', label: 'Go to About', type: 'Navigation' },
   { id: 'nav-projects', label: 'Go to Projects', type: 'Navigation' },
   { id: 'nav-experience', label: 'Go to Experience', type: 'Navigation' },
   { id: 'nav-stack', label: 'Go to Stack', type: 'Navigation' },
   { id: 'nav-contact', label: 'Go to Contact', type: 'Navigation' },
+  { id: 'switch-engineer', label: 'Switch to Engineer Lens', type: 'Lens Toggle' },
+  { id: 'switch-analyst', label: 'Switch to Analyst Lens', type: 'Lens Toggle' },
   { id: 'proj-sentrix', label: 'Project: Sentrix', type: 'Jump to Project' },
   { id: 'proj-kastack', label: 'Project: KaStack', type: 'Jump to Project' },
   { id: 'proj-traceid', label: 'Project: TraceID', type: 'Jump to Project' },
+  { id: 'proj-janvaani', label: 'Project: JanVaani', type: 'Jump to Project' },
+  { id: 'proj-atliq', label: 'Project: AtliQ', type: 'Jump to Project' },
   { id: 'act-resume', label: 'Download Resume', type: 'Action' },
   { id: 'act-email', label: 'Email Sagar', type: 'Action' },
   { id: 'act-github', label: 'Open GitHub', type: 'Action' },
@@ -40,6 +103,10 @@ export default function Home() {
   // Feature State
   const [isBooting, setIsBooting] = useState(true);
   const [bootLog, setBootLog] = useState("");
+  
+  // lens state can be 'engineer', 'analyst', or null (fork screen)
+  const [lens, setLens] = useState<'engineer' | 'analyst' | null>(null);
+
   const [cmdKOpen, setCmdKOpen] = useState(false);
   const [cmdKQuery, setCmdKQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,9 +126,9 @@ export default function Home() {
 
     const bootSequence = [
       "INITIALIZING SDUBILE.SYS...",
-      "LOADING MODULES: ml_core · rag_pipeline · waf_engine · smart_contracts... OK",
-      "AUTH: OPEN_TO_WORK = TRUE",
-      "BOOT COMPLETE — WELCOME"
+      "LOADING MODULES: ml_core · rag_pipeline · waf_engine · smart_contracts · analytics_core... OK",
+      "DETECTING VISITOR INTENT...",
+      "BOOT COMPLETE — CHOOSE YOUR PATH"
     ];
 
     let currentLine = 0;
@@ -107,9 +174,18 @@ export default function Home() {
     };
   }, []);
 
+  // Update body class for themes
+  useEffect(() => {
+    if (lens === 'analyst') {
+      document.body.classList.add('theme-analyst');
+    } else {
+      document.body.classList.remove('theme-analyst');
+    }
+  }, [lens]);
+
   // === Core Interactions (Clock, Scroll Counters, Nav) ===
   useEffect(() => {
-    if (isBooting) return;
+    if (isBooting || lens === null) return;
 
     // Clock
     const updateClock = () => {
@@ -129,7 +205,13 @@ export default function Home() {
     };
     updateUptime();
 
-    // Scroll Counters
+    // Scroll Counters - Needs to re-run if lens changes to attach to new elements?
+    // Using MutationObserver or re-running on lens change
+  }, [isBooting, lens]);
+
+  useEffect(() => {
+    if (lens === null) return;
+
     const countUp = (el: HTMLElement) => {
       const target = parseFloat(el.getAttribute('data-value') || '0');
       if (isNaN(target)) return;
@@ -165,6 +247,7 @@ export default function Home() {
       });
     }, { threshold: 0.2 });
 
+    // Clean up old counted classes so they recount if needed? No, standard is once.
     document.querySelectorAll('.service-card').forEach(card => metricsObserver.observe(card));
 
     // Nav Rail Sync
@@ -183,8 +266,11 @@ export default function Home() {
 
     observerTargetRefs.current.forEach(section => { if (section) navObserver.observe(section); });
 
-    return () => clearInterval(clockInterval);
-  }, [isBooting]);
+    return () => {
+      metricsObserver.disconnect();
+      navObserver.disconnect();
+    }
+  }, [lens]);
 
   // === Cmd+K Palette Effect ===
   useEffect(() => {
@@ -212,23 +298,24 @@ export default function Home() {
   const handleAction = (id: string) => {
     setCmdKOpen(false);
     
-    if (id.startsWith('nav-')) {
+    if (id === 'switch-engineer') setLens('engineer');
+    else if (id === 'switch-analyst') setLens('analyst');
+    else if (id.startsWith('nav-')) {
       const section = id.split('-')[1];
       document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
     } else if (id.startsWith('proj-')) {
-      const projId = id.split('-')[1];
+      const projId = id.substring(5);
       document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-      // Brief highlight effect
       setTimeout(() => {
         const projEl = document.getElementById(`proj-card-${projId}`);
         if (projEl) {
           projEl.classList.remove('highlight');
-          void projEl.offsetWidth; // trigger reflow
+          void projEl.offsetWidth; 
           projEl.classList.add('highlight');
+          projEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 500);
     } else if (id === 'act-resume') {
-      // dummy action
       alert('Downloading Resume...');
     } else if (id === 'act-email') {
       window.location.href = "mailto:dubile.sagarr@gmail.com";
@@ -247,7 +334,7 @@ export default function Home() {
     setSearchQuery(query);
     if (query.length > 2) {
       const q = query.toLowerCase();
-      const match = PROJECTS_DATA.find(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+      const match = ALL_PROJECTS.find(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
       if (match) {
         setSearchResult(match.id);
       } else {
@@ -270,16 +357,47 @@ export default function Home() {
     );
   }
 
+  if (lens === null) {
+    return (
+      <div className="fork-container">
+        <div className="fork-panel fork-panel-engineer" onClick={() => setLens('engineer')}>
+          <h2 className="fork-headline">ENGINEER</h2>
+          <div className="fork-subline">AI/ML · RAG systems · security · blockchain</div>
+          <p className="fork-teaser">I build systems that catch zero-day attacks, retrieve answers from 11,000+ conversations, and ship audited smart contracts.</p>
+          <div className="fork-footer">Same person. Two lenses. Switch anytime.</div>
+        </div>
+        <div className="fork-panel fork-panel-analyst" onClick={() => setLens('analyst')}>
+          <h2 className="fork-headline">ANALYST</h2>
+          <div className="fork-subline">Product thinking · business analysis · data storytelling</div>
+          <p className="fork-teaser">I turn raw data into decisions — sales insight dashboards, retention analytics, and civic-impact platforms judged by real stakeholders.</p>
+          <div className="fork-footer">Same person. Two lenses. Switch anytime.</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Derive dynamic content based on lens
+  const isAnalyst = lens === 'analyst';
+  const orderedProjects = isAnalyst 
+    ? [...ANALYST_PROJECTS, ...ENGINEER_PROJECTS] 
+    : [...ENGINEER_PROJECTS, ...ANALYST_PROJECTS];
+  const activeLogs = isAnalyst ? KPI_LOGS : THREAT_LOGS;
+
   return (
     <>
       <header className="status-bar" id="status-bar">
-        <div className="status-left">
+        <div className="status-left" style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
           <span className="sys-name">SAGAR_DUBILE.SYS</span>
+          <div className="lens-toggle">
+            <span className={`lens-btn ${!isAnalyst ? 'active' : ''}`} onClick={() => setLens('engineer')}>BUILD</span>
+            <span className="lens-divider">|</span>
+            <span className={`lens-btn ${isAnalyst ? 'active' : ''}`} onClick={() => setLens('analyst')}>ANALYZE</span>
+          </div>
         </div>
         <div className="status-right">
           <span className="uptime-counter" id="uptime-counter">UPTIME: {uptime} DAYS</span>
           <span className="clock" id="ist-clock">IST: {time}</span>
-          <span className="status-badge">STATUS: OPEN TO WORK <span className="status-dot"></span></span>
+          <span className="status-badge">STATUS: OPEN TO FULL-TIME / INTERNSHIP <span className="status-dot"></span></span>
           <button className="cmd-k-btn" onClick={() => setCmdKOpen(true)}>[ ⌘K ]</button>
         </div>
       </header>
@@ -332,16 +450,19 @@ export default function Home() {
             </div>
             <div className="panel-content">
               <h1 className="hero-title">
-                Building systems that work in the real world — not just <span className="accent-primary">demos.</span><span className="cursor">_</span>
+                {isAnalyst 
+                  ? <>Turning raw data into decisions that hold up in the real <span className="accent-primary">world.</span><span className="cursor">_</span></>
+                  : <>Building systems that work in the real world — not just <span className="accent-primary">demos.</span><span className="cursor">_</span></>
+                }
               </h1>
               <p className="hero-subhead">
-                Final-year CS student at VIT-AP (CGPA 8.76–8.81/10), AWS Certified Solutions Architect – Associate. I ship AI/ML, security, and blockchain systems from data to deployment — two production RAG systems built from scratch, a zero-day-catching WAF, and audited Ethereum smart contracts.
+                Final-year CS student at VIT-AP (CGPA 8.76–8.81/10), AWS Certified Solutions Architect – Associate. I move between building AI/security/blockchain systems from data to deployment, and analyzing data to drive product and business decisions — Smart India Hackathon 2025 National Finalist.
               </p>
               
               <div className="status-strip">
                 <div className="status-row"><span className="label">LOCATION</span><span className="arrow">→</span><span className="value">Chhatrapati Sambhaji Nagar, India</span></div>
                 <div className="status-row"><span className="label">EDUCATION</span><span className="arrow">→</span><span className="value">B.Tech CS · VIT-AP · Final Year (Grad 2027)</span></div>
-                <div className="status-row"><span className="label">FOCUS</span><span className="arrow">→</span><span className="value">AI Engineering · Security · Blockchain</span></div>
+                <div className="status-row"><span className="label">FOCUS</span><span className="arrow">→</span><span className="value">AI Engineering · Security · Blockchain · Business Analysis</span></div>
                 <div className="status-row"><span className="label">STATUS</span><span className="arrow">→</span><span className="value">Open to full-time / internship roles</span></div>
               </div>
 
@@ -350,18 +471,22 @@ export default function Home() {
                 <a href="#" className="btn-secondary" onClick={(e) => { e.preventDefault(); handleAction('act-resume'); }}>[ Download Résumé ]</a>
               </div>
 
-              {/* Threat Ticker (Feature B) */}
+              {/* Ticker */}
               <div className="threat-ticker-wrapper">
                 <div className="threat-ticker">
-                  {/* Repeat logs multiple times to ensure seamless infinite scroll visually */}
-                  {[...THREAT_LOGS, ...THREAT_LOGS, ...THREAT_LOGS].map((log, i) => (
+                  {[...activeLogs, ...activeLogs, ...activeLogs].map((log, i) => (
                     <span key={i} className={`threat-log ${log.type}`}>{log.text}</span>
                   ))}
                 </div>
               </div>
-              <div className="threat-caption">Sample log format from Sentrix — my ML-powered WAF. Not a live feed.</div>
+              <div className="threat-caption">
+                {isAnalyst 
+                  ? "Sample readouts from JanVaani and AtliQ Sales Insight. Not a live feed."
+                  : "Sample log format from Sentrix — my ML-powered WAF. Not a live feed."
+                }
+              </div>
 
-              {/* RAG Search (Feature D) */}
+              {/* RAG Search */}
               <div className="rag-search" style={{ marginTop: '40px' }}>
                 <label style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-muted)'}}>ASK ABOUT MY WORK</label>
                 <input 
@@ -370,15 +495,23 @@ export default function Home() {
                   value={searchQuery}
                   onChange={handleRagSearch}
                 />
-                {searchResult && (
-                  <div className="rag-result-card p-4 border border-[var(--accent-primary)] bg-[rgba(0,212,255,0.05)] text-[var(--text-primary)]">
-                    <div style={{fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-primary)', marginBottom: '8px'}}>SYSTEM MATCH: {searchResult.toUpperCase()}</div>
-                    <p style={{fontSize: '0.9rem'}}>{PROJECTS_DATA.find(p => p.id === searchResult)?.desc}</p>
-                    <button className="mt-2 text-xs font-mono text-[var(--accent-secondary)] hover:underline" onClick={() => document.getElementById(`proj-card-${searchResult}`)?.scrollIntoView({behavior: 'smooth'})}>
-                      [ View Full Project Details ]
-                    </button>
-                  </div>
-                )}
+                {searchResult && (() => {
+                  const match = ALL_PROJECTS.find(p => p.id === searchResult);
+                  if (!match) return null;
+                  const crossLens = match.lens !== lens;
+                  return (
+                    <div className="rag-result-card p-4 border border-[var(--accent-primary)] bg-[rgba(0,212,255,0.05)] text-[var(--text-primary)]">
+                      <div style={{fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent-primary)', marginBottom: '8px', display: 'flex', alignItems: 'center'}}>
+                        SYSTEM MATCH: {searchResult.toUpperCase()}
+                        {crossLens && <span className="cross-lens-badge">[CROSS-LENS RESULT]</span>}
+                      </div>
+                      <p style={{fontSize: '0.9rem'}}>{match.desc}</p>
+                      <button className="mt-2 text-xs font-mono text-[var(--accent-secondary)] hover:underline" onClick={() => handleAction(`proj-${searchResult}`)}>
+                        [ View Full Project Details ]
+                      </button>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           </section>
@@ -388,123 +521,28 @@ export default function Home() {
               <span className="panel-label">[ 02 // PROJECTS ]</span>
             </div>
             <div className="panel-content">
-              
-              {/* Sentrix */}
-              <div id="proj-card-sentrix" className="service-card group">
-                <div className="service-header">
-                  <h3 className="service-name">Sentrix <span className="service-type">// Hybrid ML-Powered Web Application Firewall</span></h3>
-                  <div className="service-links">
-                    <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+              {orderedProjects.map(proj => (
+                <div id={`proj-card-${proj.id}`} className="service-card group" key={proj.id}>
+                  <div className="service-header">
+                    <h3 className="service-name">{proj.name} <span className="service-type">{proj.type}</span></h3>
+                    {proj.links?.gh && (
+                      <div className="service-links">
+                        <a href={proj.links.gh} target="_blank" aria-label="GitHub Repo">[ GH ]</a>
+                      </div>
+                    )}
+                  </div>
+                  <div className="service-readout">
+                    <span className="readout-text">{proj.readout}</span>
+                    <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
+                  </div>
+                  <p className="service-desc">{proj.desc}</p>
+                  <div className="service-tags">
+                    {proj.tags.map(tag => (
+                      <span key={tag} className="tag">{tag}</span>
+                    ))}
                   </div>
                 </div>
-                <div className="service-readout">
-                  <span className="readout-text">PRECISION <span className="metric stat-success" data-value="97.3">0</span>% · RECALL <span className="metric stat-success" data-value="96.8">0</span>% · LATENCY <span className="metric">&lt;</span><span className="metric" data-value="50">0</span>ms · <span className="metric" data-value="1000">0</span>+ req/s</span>
-                  <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                </div>
-                <p className="service-desc">
-                  Hybrid WAF combining 60+ regex signatures with a fine-tuned DistilBERT transformer to catch zero-day SQLi, XSS, path traversal, and command injection across 50,000+ requests. Real-time WebSocket dashboard, Docker Compose + Kubernetes/GKE manifests.
-                </p>
-                <div className="service-tags">
-                  <span className="tag">DistilBERT</span>
-                  <span className="tag">FastAPI</span>
-                  <span className="tag">Docker</span>
-                  <span className="tag">Kubernetes</span>
-                  <span className="tag">Streamlit</span>
-                </div>
-              </div>
-
-              {/* KaStack */}
-              <div id="proj-card-kastack" className="service-card group">
-                <div className="service-header">
-                  <h3 className="service-name">KaStack <span className="service-type">// RAG + Persona System over 11K Conversations</span></h3>
-                  <div className="service-links">
-                    <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
-                  </div>
-                </div>
-                <div className="service-readout">
-                  <span className="readout-text"><span className="metric" data-value="11000">0</span>+ CONVERSATIONS · 2-STAGE FAISS RETRIEVAL · BUILT FROM SCRATCH</span>
-                  <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                </div>
-                <p className="service-desc">
-                  Retrieval-augmented generation system with no LangChain/LlamaIndex — topic-boundary detection via cosine similarity drift, two-stage FAISS retrieval, 3-pass persona extraction. Cost-optimized model routing (Haiku for bulk, Sonnet for chat). Shipped as a containerized FastAPI microservice with latency/throughput monitoring hooks.
-                </p>
-                <div className="service-tags">
-                  <span className="tag">FAISS</span>
-                  <span className="tag">FastAPI</span>
-                  <span className="tag">AWS</span>
-                  <span className="tag">LLMs</span>
-                  <span className="tag">Sentence Transformers</span>
-                </div>
-              </div>
-
-              {/* Neural Semantic Search Engine */}
-              <div id="proj-card-neural-search" className="service-card group">
-                <div className="service-header">
-                  <h3 className="service-name">Neural Semantic Search Engine <span className="service-type">// Retrieval System</span></h3>
-                  <div className="service-links">
-                    <a href="https://github.com/DubileSagar/Neural-Semantic-Search-RAG-Engine-" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
-                  </div>
-                </div>
-                <div className="service-readout">
-                  <span className="readout-text"><span className="metric stat-success" data-value="71.4">0</span>% CACHE HIT RATE · <span className="metric" data-value="18">0</span>K DOCS · O(n/k) LOOKUP</span>
-                  <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                </div>
-                <p className="service-desc">
-                  Semantic retrieval system over the 20 Newsgroups dataset. Fuzzy C-Means topic clusters power a cluster-bucketed cache index; PCA to 50 dims before clustering; automated k-selection via FPC sweep (k=5–25).
-                </p>
-                <div className="service-tags">
-                  <span className="tag">Fuzzy C-Means</span>
-                  <span className="tag">PCA</span>
-                  <span className="tag">ChromaDB</span>
-                  <span className="tag">FastAPI</span>
-                </div>
-              </div>
-
-              {/* JanVaani */}
-              <div id="proj-card-janvaani" className="service-card group">
-                <div className="service-header">
-                  <h3 className="service-name">JanVaani <span className="service-type">// AI-Powered Civic Grievance Platform</span></h3>
-                  <div className="service-links">
-                    <a href="https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
-                  </div>
-                </div>
-                <div className="service-readout">
-                  <span className="readout-text">+<span className="metric stat-success" data-value="45">0</span>% PRIORITIZATION ACCURACY · +<span className="metric stat-success" data-value="60">0</span>% ENGAGEMENT · -<span className="metric stat-success" data-value="35">0</span>% RESOLUTION TIME</span>
-                  <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                </div>
-                <p className="service-desc">
-                  NLP-powered civic complaint platform with intelligent autofill and issue classification (trained on 8,000+ complaints), district-level RBAC dashboards with SLA monitoring, supporting 500+ concurrent submissions. Built as a Smart India Hackathon 2025 finalist project (national).
-                </p>
-                <div className="service-tags">
-                  <span className="tag">NLP</span>
-                  <span className="tag">FastAPI</span>
-                  <span className="tag">RBAC</span>
-                  <span className="tag">ML Classification</span>
-                </div>
-              </div>
-
-              {/* TraceID */}
-              <div id="proj-card-traceid" className="service-card group">
-                <div className="service-header">
-                  <h3 className="service-name">TraceID <span className="service-type">// Frame-wise CCTV Facial Recognition</span></h3>
-                  <div className="service-links">
-                    <a href="https://github.com/DubileSagar" target="_blank" aria-label="GitHub Repo">[ GH ]</a>
-                  </div>
-                </div>
-                <div className="service-readout">
-                  <span className="readout-text"><span className="metric stat-success" data-value="94">0</span>% ACCURACY · <span className="metric" data-value="15">0</span>+ FPS · <span className="metric">&lt;</span><span className="metric" data-value="2">0</span>s DETECTION-TO-ALERT</span>
-                  <span className="hover-ping hidden">LAST DEPLOY: ACTIVE</span>
-                </div>
-                <p className="service-desc">
-                  Real-time facial recognition pipeline across 500 identities with automated alerting and a 35% throughput improvement via batch inference and infra-level tuning.
-                </p>
-                <div className="service-tags">
-                  <span className="tag">OpenCV</span>
-                  <span className="tag">Deep Learning</span>
-                  <span className="tag">Computer Vision</span>
-                </div>
-              </div>
-              
+              ))}
             </div>
           </section>
 
@@ -560,6 +598,11 @@ export default function Home() {
                   <div className="stack-label">APIS · CLOUD · INFRA</div>
                   <div className="stack-arrow">→</div>
                   <div className="stack-items">FastAPI · Docker · Kubernetes · AWS (Certified SAA) · Git · SQL</div>
+                </div>
+                <div className="stack-row">
+                  <div className="stack-label">ANALYTICS · BUSINESS</div>
+                  <div className="stack-arrow">→</div>
+                  <div className="stack-items">Power BI · SQL · Data Storytelling · Requirement & Design Docs</div>
                 </div>
               </div>
             </div>

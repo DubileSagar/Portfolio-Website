@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* CSS Variables based on brief */
+/* Base CSS Variables (Engineer / Default) */
 :root {
   --bg-color: #0A0E0F;
   --panel-bg: #111716;
@@ -14,6 +14,17 @@
   --text-muted: #7C8A87;
   
   --nav-width: 60px;
+}
+
+/* Analyst Theme Variables */
+.theme-analyst {
+  --bg-color: #12181C;
+  --panel-bg: #181F24;
+  --panel-border: #26302F;
+  
+  --accent-primary: #F5A623;
+  --accent-secondary: #6FE3C9;
+  --accent-warning: #FF6B4A;
 }
 
 /* Reset & Base */
@@ -33,6 +44,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Background Grid */
@@ -48,12 +60,21 @@ body {
   background-size: 40px 40px;
   z-index: -1;
   pointer-events: none;
+  transition: background-image 0.4s ease;
+}
+
+.theme-analyst .grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(38, 48, 47, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(38, 48, 47, 0.3) 1px, transparent 1px);
+  /* Optional: Could change grid size to look more like dashboard tiles */
+  background-size: 60px 60px;
 }
 
 /* Typography Utilities */
-.accent-primary { color: var(--accent-primary); }
-.accent-secondary { color: var(--accent-secondary); }
-.stat-success { color: var(--accent-secondary) !important; }
+.accent-primary { color: var(--accent-primary); transition: color 0.4s ease; }
+.accent-secondary { color: var(--accent-secondary); transition: color 0.4s ease; }
+.stat-success { color: var(--accent-secondary) !important; transition: color 0.4s ease; }
 
 /* Status Bar */
 .status-bar {
@@ -72,6 +93,7 @@ body {
   letter-spacing: 0.5px;
   z-index: 100;
   color: var(--text-muted);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .status-right {
@@ -104,11 +126,32 @@ body {
   transition: all 0.2s;
   color: var(--text-primary);
 }
-
 .cmd-k-btn:hover {
   background: var(--accent-primary);
   color: var(--bg-color);
   border-color: var(--accent-primary);
+}
+
+/* Lens Toggle */
+.lens-toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--panel-border);
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: rgba(10, 14, 15, 0.3);
+}
+.lens-btn {
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.lens-btn.active {
+  color: var(--accent-primary);
+}
+.lens-divider {
+  color: var(--panel-border);
 }
 
 @keyframes pulse {
@@ -117,11 +160,98 @@ body {
   100% { opacity: 1; }
 }
 
+/* Fork / Landing Choice */
+.fork-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9000; /* below boot sequence */
+  display: flex;
+  background-color: #000;
+}
+@media (max-width: 768px) {
+  .fork-container {
+    flex-direction: column;
+  }
+}
+
+.fork-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  text-align: center;
+}
+
+.fork-panel-engineer {
+  background-color: #0A0E0F;
+  border-right: 1px solid #00D4FF; /* The glowing seam */
+  box-shadow: inset -5px 0 20px rgba(0, 212, 255, 0.1);
+}
+.fork-panel-analyst {
+  background-color: #12181C;
+}
+
+@media (max-width: 768px) {
+  .fork-panel-engineer {
+    border-right: none;
+    border-bottom: 1px solid #00D4FF;
+    box-shadow: inset 0 -5px 20px rgba(0, 212, 255, 0.1);
+  }
+}
+
+.fork-panel:hover {
+  flex: 1.15;
+}
+.fork-panel:hover .fork-headline {
+  transform: scale(1.05);
+}
+.fork-panel-engineer:hover .fork-headline { color: #00D4FF; }
+.fork-panel-analyst:hover .fork-headline { color: #F5A623; }
+
+.fork-headline {
+  font-family: var(--font-prose);
+  font-size: 3rem;
+  font-weight: 600;
+  color: #E8EDEC;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  letter-spacing: -0.02em;
+}
+.fork-subline {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #7C8A87;
+  margin-bottom: 24px;
+}
+.fork-teaser {
+  font-size: 1rem;
+  color: #E8EDEC;
+  max-width: 400px;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+.fork-footer {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #7C8A87;
+  pointer-events: none;
+}
+
 /* Layout */
 .app-container {
   display: flex;
   min-height: 100vh;
-  padding-top: 32px; /* For status bar */
+  padding-top: 32px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -170,6 +300,7 @@ body {
   position: relative;
   background-color: var(--bg-color);
   padding: 10px 0;
+  transition: background-color 0.4s ease;
 }
 
 .nav-item {
@@ -179,7 +310,7 @@ body {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   letter-spacing: 2px;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.4s ease;
   background-color: var(--bg-color);
   padding: 10px 0;
 }
@@ -209,12 +340,17 @@ body {
   background-color: var(--panel-bg);
   border-radius: 2px;
   position: relative;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .panel-header {
   border-bottom: 1px solid var(--panel-border);
   padding: 8px 16px;
   background-color: rgba(31, 43, 41, 0.4);
+  transition: border-color 0.4s ease, background-color 0.4s ease;
+}
+.theme-analyst .panel-header {
+  background-color: rgba(38, 48, 47, 0.4);
 }
 
 .panel-label {
@@ -246,11 +382,8 @@ body {
   color: var(--text-primary);
   font-size: 14px;
 }
-.boot-line {
-  margin-bottom: 8px;
-}
 
-/* Threat Ticker */
+/* Threat/KPI Ticker */
 .threat-ticker-wrapper {
   overflow: hidden;
   white-space: nowrap;
@@ -262,6 +395,7 @@ body {
   position: relative;
   font-family: var(--font-mono);
   font-size: 12px;
+  transition: border-color 0.4s ease;
 }
 .threat-ticker {
   display: inline-block;
@@ -276,8 +410,10 @@ body {
   margin-right: 40px;
   color: var(--text-muted);
 }
-.threat-log.blocked { color: var(--accent-warning); }
-.threat-log.allowed { color: var(--accent-secondary); }
+.threat-log.blocked, .threat-log.down { color: var(--accent-warning); transition: color 0.4s ease; }
+.threat-log.allowed, .threat-log.up { color: var(--accent-secondary); transition: color 0.4s ease; }
+.threat-log.synced { color: var(--accent-primary); transition: color 0.4s ease; }
+
 .threat-caption {
   font-size: 10px;
   color: var(--text-muted);
@@ -301,6 +437,7 @@ body {
   font-family: var(--font-mono);
   font-size: 13px;
   outline: none;
+  transition: border-color 0.4s ease, color 0.4s ease;
 }
 .rag-search input:focus {
   border-color: var(--accent-primary);
@@ -308,6 +445,15 @@ body {
 .rag-result-card {
   margin-top: 16px;
   animation: fadeIn 0.3s ease;
+  transition: border-color 0.4s ease, background-color 0.4s ease;
+}
+.cross-lens-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent-warning);
+  border: 1px dashed var(--accent-warning);
+  padding: 2px 4px;
+  margin-left: 8px;
 }
 
 /* Command Palette */
@@ -316,7 +462,7 @@ body {
   inset: 0;
   background: rgba(10, 14, 15, 0.8);
   backdrop-filter: blur(2px);
-  z-index: 1000;
+  z-index: 10000;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -330,6 +476,7 @@ body {
   box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
   display: flex;
   flex-direction: column;
+  transition: border-color 0.4s ease;
 }
 .cmd-k-input-wrapper {
   padding: 16px;
@@ -409,6 +556,7 @@ body {
   background-color: rgba(10, 14, 15, 0.5);
   padding: 16px;
   border: 1px solid var(--panel-border);
+  transition: border-color 0.4s ease;
 }
 
 .status-row {
@@ -445,7 +593,7 @@ body {
 }
 
 .btn-primary {
-  background-color: rgba(0, 212, 255, 0.1);
+  background-color: rgba(0, 212, 255, 0.05);
   color: var(--accent-primary);
   border-color: var(--accent-primary) !important;
 }
@@ -468,7 +616,7 @@ body {
 .service-card {
   border-bottom: 1px solid var(--panel-border);
   padding: 32px 0;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.4s ease;
 }
 
 .service-card.highlight {
@@ -491,6 +639,9 @@ body {
 
 .service-card:hover {
   background-color: rgba(31, 43, 41, 0.2);
+}
+.theme-analyst .service-card:hover {
+  background-color: rgba(38, 48, 47, 0.2);
 }
 
 .service-header {
@@ -532,6 +683,7 @@ body {
   border: 1px solid var(--panel-border);
   padding: 6px 12px;
   background-color: rgba(10, 14, 15, 0.5);
+  transition: border-color 0.4s ease;
 }
 
 .metric {
@@ -565,6 +717,7 @@ body {
   background-color: rgba(31, 43, 41, 0.5);
   border: 1px solid var(--panel-border);
   color: var(--text-muted);
+  transition: border-color 0.4s ease;
 }
 
 /* Experience */
@@ -619,20 +772,22 @@ body {
 .stack-grid {
   display: flex;
   flex-direction: column;
-  gap: 1px; /* Borders via background */
+  gap: 1px;
   background-color: var(--panel-border);
   border: 1px solid var(--panel-border);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .stack-row {
   display: flex;
   background-color: var(--panel-bg);
   font-size: 12px;
+  transition: background-color 0.4s ease;
 }
 
 .stack-label {
   padding: 16px;
-  width: 200px;
+  width: 220px;
   color: var(--text-muted);
   flex-shrink: 0;
 }
@@ -680,6 +835,10 @@ body {
   display: flex;
   align-items: center;
   background-color: rgba(31, 43, 41, 0.2);
+  transition: border-color 0.4s ease;
+}
+.theme-analyst .cred-list li {
+  background-color: rgba(38, 48, 47, 0.2);
 }
 
 .cred-list li::before {
@@ -694,6 +853,7 @@ body {
   background-color: rgba(10, 14, 15, 0.8);
   border: 1px solid var(--panel-border);
   padding: 24px;
+  transition: border-color 0.4s ease;
 }
 
 .terminal-header {
@@ -756,6 +916,7 @@ body {
   font-size: 12px;
   padding: 8px 0;
   outline: none;
+  transition: border-color 0.4s ease;
 }
 
 .form-group input:focus,
