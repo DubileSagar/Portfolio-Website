@@ -1,256 +1,205 @@
 "use client";
 
-import { ArrowRight, Code2, Database, Shield, LayoutDashboard, Terminal, BrainCircuit, Network, LineChart, ExternalLink, Mail, CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
-// Lucide Brand Icon Replacements since they aren't directly exported in this version
-const GithubIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-);
+const PROJECT_SENTRIX = {
+  id: "sentrix", name: "Sentrix WAF", category: "Security & ML",
+  desc: "Hybrid Web Application Firewall combining 60+ regex signatures with a fine-tuned DistilBERT transformer. Catches zero-day SQLi, XSS, and command injection.",
+  metrics: "97.3% Precision / <50ms Latency",
+  link: "https://github.com/DubileSagar"
+};
 
-const LinkedinIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-);
+const PROJECT_KASTACK = {
+  id: "kastack", name: "KaStack RAG", category: "AI Engineering",
+  desc: "Production-grade RAG system over 11K conversations. Built from scratch without LangChain. Features 2-stage FAISS retrieval and topic-boundary detection.",
+  metrics: "11K+ Chats / FAISS Retrieval",
+  link: "https://github.com/DubileSagar"
+};
 
-const PROJECTS = [
-  {
-    id: "sentrix",
-    title: "Sentrix WAF",
-    category: "Security",
-    desc: "Hybrid Web Application Firewall combining 60+ regex signatures with a fine-tuned DistilBERT transformer. Catches zero-day SQLi, XSS, and command injection.",
-    metrics: ["97.3% Precision", "<50ms Latency"],
-    icon: Shield,
-    link: "https://github.com/DubileSagar"
-  },
-  {
-    id: "kastack",
-    title: "KaStack RAG",
-    category: "AI Engineering",
-    desc: "Production-grade RAG system over 11K conversations. Built from scratch without LangChain. Features 2-stage FAISS retrieval.",
-    metrics: ["11K+ Chats", "FAISS Search"],
-    icon: BrainCircuit,
-    link: "https://github.com/DubileSagar"
-  },
-  {
-    id: "janvaani",
-    title: "JanVaani",
-    category: "Analytics Platform",
-    desc: "AI-powered civic grievance platform with intelligent autofill, district-level RBAC dashboards, and SLA monitoring.",
-    metrics: ["+45% Accuracy", "+60% Engagement"],
-    icon: LayoutDashboard,
-    link: "https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031"
-  },
-  {
-    id: "traceid",
-    title: "TraceID CCTV",
-    category: "Computer Vision",
-    desc: "Real-time facial recognition pipeline across 500 identities with automated alerting. Achieved massive throughput gains via batch inference.",
-    metrics: ["94% Accuracy", "15+ FPS"],
-    icon: Network,
-    link: "https://github.com/DubileSagar"
-  },
-  {
-    id: "atliq",
-    title: "AtliQ Insights",
-    category: "Data Storytelling",
-    desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for real-time business decision-making.",
-    metrics: ["Power BI", "SQL Modeling"],
-    icon: LineChart,
-    link: "#"
+const PROJECT_TRACEID = {
+  id: "traceid", name: "TraceID", category: "Computer Vision",
+  desc: "Real-time facial recognition pipeline across 500 identities with automated alerting. Achieved massive throughput gains via batch inference tuning.",
+  metrics: "94% Accuracy / 15+ FPS",
+  link: "https://github.com/DubileSagar"
+};
+
+const PROJECT_JANVAANI = {
+  id: "janvaani", name: "JanVaani", category: "Product / Platform",
+  desc: "AI-powered civic grievance platform with intelligent autofill, district-level RBAC dashboards, and SLA monitoring. National Hackathon Finalist.",
+  metrics: "+45% Accuracy / +60% Engagement",
+  link: "https://github.com/DubileSagar/SIH2025Finals_63008_SANKALP_SIH25031"
+};
+
+const PROJECT_ATLIQ = {
+  id: "atliq", name: "AtliQ Insights", category: "Business Analytics",
+  desc: "End-to-end sales analytics build: SQL data modeling feeding an interactive Power BI dashboard for real-time business decision-making.",
+  metrics: "Power BI / SQL",
+  link: "#"
+};
+
+const PROJECT_B2B = {
+  id: "b2b", name: "SaaS Analytics", category: "Consulting Analysis",
+  desc: "Simulates and analyzes a realistic B2B SaaS platform to demonstrate business-analysis skills: transforming raw operational data into retention and customer-health insight.",
+  metrics: "Retention Optimization / Python",
+  link: "#"
+};
+
+const ENGINEER_PROJECTS = [PROJECT_SENTRIX, PROJECT_KASTACK, PROJECT_TRACEID];
+const ANALYST_PROJECTS = [PROJECT_JANVAANI, PROJECT_ATLIQ, PROJECT_B2B];
+
+export default function MinimalPortfolio() {
+  const [lens, setLens] = useState<'tech' | 'analytics' | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Optional: read from localStorage to remember choice
+    const saved = localStorage.getItem('portfolio-lens');
+    if (saved === 'tech' || saved === 'analytics') {
+      setLens(saved);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (lens === 'tech') {
+      document.body.classList.add('lens-tech');
+      localStorage.setItem('portfolio-lens', 'tech');
+    } else {
+      document.body.classList.remove('lens-tech');
+      if (lens === 'analytics') {
+        localStorage.setItem('portfolio-lens', 'analytics');
+      }
+    }
+  }, [lens]);
+
+  if (!mounted) return null;
+
+  if (lens === null) {
+    return (
+      <div className="fork-container">
+        <div className="fork-panel fork-panel-tech" onClick={() => setLens('tech')}>
+          <h2 className="fork-title">ENGINEERING</h2>
+          <p className="fork-subtitle">AI / ML / Blockchain / Security</p>
+          <div className="fork-footer">Select Path</div>
+        </div>
+        <div className="fork-panel fork-panel-analytics" onClick={() => setLens('analytics')}>
+          <h2 className="fork-title">ANALYTICS</h2>
+          <p className="fork-subtitle">Product Management / Consulting / Business Analysis</p>
+          <div className="fork-footer">Select Path</div>
+        </div>
+      </div>
+    );
   }
-];
 
-export default function SaaSPortfolio() {
+  const isTech = lens === 'tech';
+  const projects = isTech ? ENGINEER_PROJECTS : ANALYST_PROJECTS;
+  const oppositeProjects = isTech ? ANALYST_PROJECTS : ENGINEER_PROJECTS;
+
   return (
-    <main className="min-h-screen relative overflow-hidden text-[var(--text-primary)]">
+    <main className="min-h-screen px-6 md:px-12 max-w-6xl mx-auto">
       
-      {/* Background Gradients */}
-      <div className="saas-gradient-bg"></div>
-
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center bg-[var(--bg-app)]/50 backdrop-blur-md border-b border-white/5">
-        <div className="font-semibold tracking-tight text-lg flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-blue-500/20"></div>
-          Sagar Dubile
+      {/* Header */}
+      <header className="py-8 minimal-border-b flex justify-between items-center text-xs uppercase tracking-widest">
+        <div>Sagar Dubile / 2026</div>
+        <div className="flex gap-4">
+          <button 
+            onClick={() => setLens('tech')} 
+            className={`hover:opacity-100 transition-opacity ${isTech ? 'font-bold opacity-100' : 'opacity-40'}`}
+          >
+            Engineering
+          </button>
+          <span>/</span>
+          <button 
+            onClick={() => setLens('analytics')} 
+            className={`hover:opacity-100 transition-opacity ${!isTech ? 'font-bold opacity-100' : 'opacity-40'}`}
+          >
+            Analytics
+          </button>
         </div>
-        <div className="hidden md:flex gap-8 text-sm font-medium text-[var(--text-secondary)]">
-          <a href="#platform" className="hover:text-white transition-colors">Platform</a>
-          <a href="#features" className="hover:text-white transition-colors">Features</a>
-          <a href="#infrastructure" className="hover:text-white transition-colors">Infrastructure</a>
-        </div>
-        <a href="mailto:dubile.sagarr@gmail.com" className="saas-btn-secondary !py-2 !px-4 text-sm hidden md:block">
-          Contact Sales
-        </a>
-      </nav>
+      </header>
 
-      {/* Hero Section */}
-      <section className="pt-40 pb-24 px-6 max-w-5xl mx-auto text-center flex flex-col items-center">
-        
-        <div className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-          </span>
-          Available for Full-time & Internships
-        </div>
-
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-[1.1]">
-          Intelligent systems,<br/>
-          <span className="text-gradient-accent">built for production.</span>
+      {/* Hero */}
+      <section className="py-32 md:py-48 minimal-border-b">
+        <h1 className="text-4xl md:text-6xl font-light mb-8 max-w-4xl leading-tight">
+          {isTech 
+            ? "I engineer intelligent systems that work in the real world." 
+            : "I turn raw data into strategic decisions that hold up in the real world."}
         </h1>
-        
-        <p className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mb-10 leading-relaxed">
-          Bridging the gap between raw data and real-world impact. From zero-day catching WAFs to business-driving analytics dashboards.
+        <p className="text-[var(--text-secondary)] text-lg max-w-2xl mb-12">
+          {isTech 
+            ? "Specializing in AI/ML infrastructure, zero-day catching WAFs, and production RAG systems. AWS Certified and Ethereum audited." 
+            : "Specializing in product analysis, sales insight dashboards, and civic-impact platforms. Combining business intuition with deep data fluency."}
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4">
-          <a href="#features" className="saas-btn-primary flex items-center justify-center gap-2">
-            Explore Platform <ArrowRight size={18} />
-          </a>
-          <a href="https://github.com/DubileSagar" target="_blank" className="saas-btn-secondary flex items-center justify-center gap-2">
-            <GithubIcon /> View Source
-          </a>
-        </div>
+        <a href="#work" className="minimal-btn">
+          View Selected Work <ArrowRight size={16} />
+        </a>
       </section>
 
-      {/* Dashboard Preview / Trusted By (SaaS trope) */}
-      <section id="platform" className="px-6 max-w-6xl mx-auto mb-32">
-        <div className="saas-card p-1">
-          <div className="bg-[#0f1219] rounded-[20px] overflow-hidden border border-white/5 relative h-64 md:h-96 flex items-center justify-center">
-             <div className="absolute inset-0 bg-gradient-to-t from-[#0f1219] to-transparent z-10"></div>
-             {/* Abstract Dashboard Mockup */}
-             <div className="w-full h-full p-8 opacity-40">
-                <div className="flex gap-4 mb-6">
-                  <div className="h-4 w-1/4 bg-indigo-500/20 rounded"></div>
-                  <div className="h-4 w-1/2 bg-blue-500/20 rounded"></div>
-                </div>
-                <div className="grid grid-cols-3 gap-6 mb-6">
-                  <div className="h-24 bg-white/5 rounded-xl"></div>
-                  <div className="h-24 bg-white/5 rounded-xl"></div>
-                  <div className="h-24 bg-white/5 rounded-xl"></div>
-                </div>
-                <div className="h-48 bg-indigo-500/10 rounded-xl"></div>
-             </div>
-             <div className="absolute z-20 text-center">
-                <p className="font-medium text-lg text-white drop-shadow-md">Powering data-driven solutions.</p>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Grid (Projects) */}
-      <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Core Capabilities</h2>
-          <p className="text-[var(--text-secondary)] text-lg">Robust microservices and analytical engines ready to scale.</p>
+      {/* Primary Projects */}
+      <section id="work" className="py-24">
+        <div className="mb-16">
+          <h2 className="text-sm uppercase tracking-widest text-[var(--text-secondary)] mb-2">Selected Works</h2>
+          <h3 className="text-2xl font-light">{isTech ? 'Engineering & AI' : 'Product & Analytics'}</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((proj, i) => (
-            <div key={proj.id} className="saas-card p-8 flex flex-col h-full relative group">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
-                <proj.icon size={24} />
+        <div>
+          {projects.map((proj) => (
+            <div key={proj.id} className="project-row group">
+              <div className="project-meta">
+                <h4 className="text-xl mb-2">{proj.name}</h4>
+                <span className="pill mb-4 md:mb-0">{proj.category}</span>
               </div>
-              
-              <h3 className="text-xl font-semibold mb-2">{proj.title}</h3>
-              <p className="text-[var(--text-secondary)] mb-6 flex-grow text-sm leading-relaxed">
-                {proj.desc}
-              </p>
-              
-              <div className="flex flex-wrap gap-2 mb-6">
-                {proj.metrics.map(metric => (
-                  <span key={metric} className="text-xs font-medium px-2 py-1 bg-white/5 rounded-md text-white/80 border border-white/10">
-                    {metric}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-auto pt-6 border-t border-white/5">
-                <a href={proj.link} target="_blank" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors">
-                  Learn more <ArrowRight size={14} />
-                </a>
+              <div className="project-content">
+                <p className="text-[var(--text-secondary)] mb-6 text-lg">{proj.desc}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs uppercase tracking-wider font-semibold opacity-70">{proj.metrics}</span>
+                  <a href={proj.link} target="_blank" className="flex items-center gap-1 text-xs uppercase tracking-wider hover:opacity-70 transition-opacity">
+                    View <ExternalLink size={14} />
+                  </a>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Infrastructure / Stack */}
-      <section id="infrastructure" className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="saas-card p-8 md:p-16 flex flex-col lg:flex-row gap-12 items-center">
-          
-          <div className="flex-1">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">Built on modern infrastructure.</h2>
-            <p className="text-[var(--text-secondary)] mb-8 leading-relaxed">
-              Experience designing scalable, secure architectures and optimizing gas on the EVM. Equipped with the right tools to turn prototypes into production-grade systems.
-            </p>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-sm font-medium">
-                <CheckCircle2 className="text-indigo-500" size={20} />
-                <span>AWS Certified Solutions Architect – Associate</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm font-medium">
-                <CheckCircle2 className="text-indigo-500" size={20} />
-                <span>IBM Blockchain Developer Certification</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm font-medium">
-                <CheckCircle2 className="text-indigo-500" size={20} />
-                <span>B.Tech CS, VIT-AP (CGPA 8.76/10)</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div className="flex-1 w-full">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-[#0f1219] border border-white/5 p-6 rounded-2xl flex flex-col gap-3 hover:border-indigo-500/30 transition-colors">
-                <Terminal className="text-indigo-400" size={24} />
-                <h4 className="font-semibold text-sm">AI & ML</h4>
-                <p className="text-xs text-[var(--text-secondary)]">PyTorch, TensorFlow, HuggingFace, Scikit-learn</p>
+      {/* Opposite Lens Projects (Honesty principle) */}
+      <section className="py-24 minimal-border-t">
+        <div className="mb-16">
+          <h2 className="text-sm uppercase tracking-widest text-[var(--text-secondary)] mb-2">Cross-Domain Context</h2>
+          <h3 className="text-2xl font-light">
+            {isTech ? 'Also shipped in Product & Analytics' : 'Also shipped in Engineering & AI'}
+          </h3>
+          <p className="text-[var(--text-secondary)] mt-4 max-w-2xl">
+            I believe strong engineers need product intuition, and strong analysts need technical depth. Here is my work in the other domain.
+          </p>
+        </div>
+
+        <div>
+          {oppositeProjects.map((proj) => (
+            <div key={proj.id} className="project-row group opacity-80 hover:opacity-100">
+              <div className="project-meta">
+                <h4 className="text-xl mb-2">{proj.name}</h4>
               </div>
-              <div className="bg-[#0f1219] border border-white/5 p-6 rounded-2xl flex flex-col gap-3 hover:border-blue-500/30 transition-colors">
-                <Database className="text-blue-400" size={24} />
-                <h4 className="font-semibold text-sm">Backend</h4>
-                <p className="text-xs text-[var(--text-secondary)]">FastAPI, Docker, Kubernetes, SQL</p>
-              </div>
-              <div className="bg-[#0f1219] border border-white/5 p-6 rounded-2xl flex flex-col gap-3 hover:border-purple-500/30 transition-colors">
-                <Code2 className="text-purple-400" size={24} />
-                <h4 className="font-semibold text-sm">Blockchain</h4>
-                <p className="text-xs text-[var(--text-secondary)]">Solidity, Hardhat, Web3.js, EVM</p>
-              </div>
-              <div className="bg-[#0f1219] border border-white/5 p-6 rounded-2xl flex flex-col gap-3 hover:border-sky-500/30 transition-colors">
-                <LineChart className="text-sky-400" size={24} />
-                <h4 className="font-semibold text-sm">Analytics</h4>
-                <p className="text-xs text-[var(--text-secondary)]">Power BI, RAG, FAISS, ChromaDB</p>
+              <div className="project-content">
+                <p className="text-[var(--text-secondary)] mb-4">{proj.desc}</p>
               </div>
             </div>
-          </div>
-
+          ))}
         </div>
       </section>
 
-      {/* CTA / Footer */}
-      <footer className="border-t border-white/5 mt-12 bg-black/20">
-        <div className="max-w-5xl mx-auto px-6 py-24 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to scale?</h2>
-          <p className="text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
-            Currently open to full-time and internship roles. Let's build secure, intelligent systems together.
-          </p>
-          <div className="flex justify-center gap-4">
-            <a href="mailto:dubile.sagarr@gmail.com" className="saas-btn-primary">Get in Touch</a>
-          </div>
-          
-          <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[var(--text-secondary)]">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-gradient-to-br from-indigo-500 to-blue-500"></div>
-              <span>© 2026 Sagar Dubile. All rights reserved.</span>
-            </div>
-            <div className="flex gap-6">
-              <a href="https://github.com/DubileSagar" target="_blank" className="hover:text-white transition-colors"><GithubIcon /></a>
-              <a href="https://www.linkedin.com/in/sagar-dubile-2079b0306" target="_blank" className="hover:text-white transition-colors"><LinkedinIcon /></a>
-              <a href="mailto:dubile.sagarr@gmail.com" className="hover:text-white transition-colors"><Mail size={20} /></a>
-            </div>
-          </div>
+      {/* Footer */}
+      <footer className="py-12 minimal-border-t flex flex-col md:flex-row justify-between items-center text-xs uppercase tracking-widest text-[var(--text-secondary)]">
+        <div>© 2026 Sagar Dubile</div>
+        <div className="flex gap-8 mt-4 md:mt-0">
+          <a href="mailto:dubile.sagarr@gmail.com" className="hover:text-[var(--text-primary)] transition-colors">Email</a>
+          <a href="https://github.com/DubileSagar" target="_blank" className="hover:text-[var(--text-primary)] transition-colors">GitHub</a>
+          <a href="https://www.linkedin.com/in/sagar-dubile-2079b0306" target="_blank" className="hover:text-[var(--text-primary)] transition-colors">LinkedIn</a>
         </div>
       </footer>
+
     </main>
   );
 }
