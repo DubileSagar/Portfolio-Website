@@ -1,13 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --bg-app: #09090b;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --text-primary: #FAFAFA;
-  --text-secondary: #A1A1AA;
-  --accent-blue: #3b82f6;
-  --accent-purple: #8b5cf6;
+  /* Default (Light) */
+  --bg-primary: #ffffff;
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --border-color: #eaeaea;
+  --hover-bg: #f5f5f5;
+  --invert-bg: #111111;
+  --invert-text: #ffffff;
+}
+
+.lens-tech {
+  /* Dark Mode for Tech */
+  --bg-primary: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --border-color: #333333;
+  --hover-bg: #1a1a1a;
+  --invert-bg: #ffffff;
+  --invert-text: #111111;
 }
 
 * {
@@ -17,103 +29,191 @@
 }
 
 body {
-  background-color: var(--bg-app);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-prose), "Inter", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.5s ease, color 0.5s ease;
   overflow-x: hidden;
-}
-
-/* Background Gradients */
-.saas-gradient-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  background: 
-    radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
-  filter: blur(80px);
-}
-
-/* Typography Options */
-.text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-accent {
-  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Premium Card (Glassmorphism) */
-.saas-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--card-border);
-  border-radius: 24px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.saas-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Buttons */
-.saas-btn-primary {
-  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
-  color: #fff;
-  border-radius: 9999px;
-  padding: 12px 24px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: opacity 0.2s, transform 0.2s;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
-}
-
-.saas-btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.saas-btn-secondary {
-  background: var(--card-bg);
-  color: var(--text-primary);
-  border-radius: 9999px;
-  padding: 12px 24px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: background 0.2s;
-  border: 1px solid var(--card-border);
-}
-
-.saas-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-app); 
+  background: var(--bg-primary); 
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--card-border); 
-  border-radius: 10px;
+  background: var(--border-color); 
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary); 
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* Split Fork */
+.fork-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  z-index: 9999;
+}
+@media (max-width: 768px) {
+  .fork-container {
+    flex-direction: column;
+  }
+}
+
+.fork-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  cursor: pointer;
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  text-align: center;
+}
+
+.fork-panel:hover {
+  flex: 1.2;
+}
+
+.fork-panel-tech {
+  background-color: #111111;
+  color: #ffffff;
+  border-right: 1px solid #333333;
+}
+
+.fork-panel-analytics {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+@media (max-width: 768px) {
+  .fork-panel-tech {
+    border-right: none;
+    border-bottom: 1px solid #333333;
+  }
+}
+
+.fork-title {
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  transition: transform 0.3s ease;
+}
+
+.fork-panel:hover .fork-title {
+  transform: scale(1.05);
+}
+
+.fork-subtitle {
+  font-size: 0.85rem;
+  color: inherit;
+  opacity: 0.6;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.fork-footer {
+  position: absolute;
+  bottom: 32px;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Layout Utilities */
+.minimal-border-b {
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.5s ease;
+}
+.minimal-border-t {
+  border-top: 1px solid var(--border-color);
+  transition: border-color 0.5s ease;
+}
+.minimal-border-r {
+  border-right: 1px solid var(--border-color);
+  transition: border-color 0.5s ease;
+}
+
+.minimal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: var(--invert-bg);
+  color: var(--invert-text);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--invert-bg);
+  transition: all 0.2s ease;
+}
+
+.minimal-btn:hover {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.project-row {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease, border-color 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  .project-row {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.project-row:hover {
+  background-color: var(--hover-bg);
+}
+
+.project-meta {
+  width: 100%;
+  margin-bottom: 16px;
+}
+@media (min-width: 768px) {
+  .project-meta {
+    width: 30%;
+    margin-bottom: 0;
+    padding-right: 24px;
+  }
+}
+
+.project-content {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .project-content {
+    width: 70%;
+  }
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
 }
